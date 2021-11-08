@@ -1,0 +1,9 @@
+<form #registerForm="ngForm">
+    username:
+    <input type="text" name="username" id="username" required ngModel>
+    email:
+    <input type="email" name="email" id="email" required ngModel>
+    password:
+    <input type="password" name="password" id="password" required ngModel>
+    <button (click)="register(registerForm.value)" type="submit" [disabled]="!registerForm.form.valid">Register</button>
+</form>

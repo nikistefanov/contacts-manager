@@ -1,0 +1,24 @@
+<nav>
+    <ul *ngIf="!authService.isLogged; else loggedUser">
+        <li>
+            <a [routerLink]="['login']">Login</a>
+        </li>
+        <li>
+            <a [routerLink]="['register']">Register</a>
+        </li>
+    </ul>
+</nav>
+<router-outlet *ngIf="!isLoading; else loading"></router-outlet>
+
+<ng-template #loggedUser>
+    Hi, {{authService.getUserInfo().user.username}}
+    <ul>
+        <li>
+            <a href="" (click)="logout()">Logout</a>
+        </li>
+    </ul>
+</ng-template>
+
+<ng-template #loading>
+    Loading...
+</ng-template>

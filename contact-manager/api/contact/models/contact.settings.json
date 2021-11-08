@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contacts",
+  "info": {
+    "name": "Contact",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "firstName": {
+      "type": "string",
+      "required": true,
+      "unique": false
+    },
+    "lastName": {
+      "type": "string",
+      "required": true
+    },
+    "user_id": {
+      "type": "integer",
+      "private": true,
+      "required": true
+    }
+  }
+}
