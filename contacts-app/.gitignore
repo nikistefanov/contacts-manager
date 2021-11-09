@@ -4,7 +4,7 @@
 /out-tsc
 /vendor
 /app/logs
-.angular
+.angular/
 
 # dependencies
 /node_modules
