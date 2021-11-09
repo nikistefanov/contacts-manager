@@ -1,0 +1,31 @@
+<nav class="">
+    <mat-toolbar class="container mx-auto">
+        <img class="pr-2 max-h-full" src="assets/images/contacts-app-logo.png" alt="">
+        <span>ContactMe</span>
+        <span class="example-spacer"></span>
+        <ul class="flex gap-3 ml-auto ng-star-inserted" *ngIf="!authService.isLogged; else loggedUser">
+            <li>
+                <a [routerLink]="['login']">Login</a>
+            </li>
+            <li>
+                <a [routerLink]="['register']">Register</a>
+            </li>
+        </ul>
+        <div class="sm:hidden">
+            <button mat-icon-button>
+                <mat-icon>menu</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+</nav>
+<ng-template #loggedUser>
+    Hi, {{authService.getUserInfo().user.username}}
+    <button mat-raised-button (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+    </button>
+</ng-template>
+
+<ng-template #loading>
+    Loading...
+</ng-template>

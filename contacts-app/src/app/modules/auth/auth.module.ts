@@ -6,6 +6,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MaterialModule } from '../material/material.module';
+import { SharedModule } from '../../shared/shared.module';
 
 const COMPONENTS = [
     RegisterComponent,
@@ -18,7 +20,9 @@ const COMPONENTS = [
     CommonModule,
     AuthRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MaterialModule,
+    SharedModule
   ],
   exports: [...COMPONENTS]
 })

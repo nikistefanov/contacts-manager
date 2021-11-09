@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../shared/services/auth/auth.service';
-import { wait } from '../../shared/utilities/promise-helpers';
+import { AuthService } from '../../services/auth/auth.service';
+import { wait } from '../../utilities/promise-helpers';
 
 @Component({
     selector: 'app-navbar',

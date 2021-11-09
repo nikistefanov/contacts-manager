@@ -1,7 +1,31 @@
-<form #loginForm="ngForm">
-    username:
-    <input type="text" name="username" id="username" required ngModel>
-    password:
-    <input type="password" name="password" id="password" required ngModel>
-    <button (click)="login(loginForm.value)" type="submit" [disabled]="!loginForm.form.valid">Login</button>
-</form>
+<app-card title="Login">
+    <form #loginForm="ngForm">
+        <div>
+            <mat-form-field class="w-full" appearance="fill">
+                <mat-label>Username</mat-label>
+                <input #username="ngModel" ngModel type="text" name="username" matInput placeholder="Username" required>
+                <mat-error *ngIf="username?.errors">
+                    <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="mt-5 mb-5">
+            <mat-form-field class="w-full" appearance="fill">
+                <mat-label>Username</mat-label>
+                <input #password="ngModel" ngModel type="password" name="password" matInput placeholder="Password" required>
+                <mat-error *ngIf="password?.errors">
+                    <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" (click)="login(loginForm.value)" type="submit" [disabled]="!loginForm.form.valid">Login</button>
+    </form>
+    <div class="flex mt-6">
+        <p>Don't have an account?</p>
+        <a class="ml-auto text-blue-500" [routerLink]="['/register']">Register for free</a>
+    </div>
+</app-card>
+
+<ng-template #requiredMessage>
+    Field is <strong>required</strong>
+</ng-template>
