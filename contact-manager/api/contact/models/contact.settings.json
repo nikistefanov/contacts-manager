@@ -17,14 +17,26 @@
       "required": true,
       "unique": false
     },
-    "lastName": {
+    "surname": {
       "type": "string",
       "required": true
     },
-    "user_id": {
+    "userId": {
       "type": "integer",
-      "private": true,
+      "private": false,
       "required": true
+    },
+    "DOB": {
+      "type": "date"
+    },
+    "address": {
+      "type": "string"
+    },
+    "phoneNumber": {
+      "type": "integer"
+    },
+    "IBAN": {
+      "type": "integer"
     }
   }
 }

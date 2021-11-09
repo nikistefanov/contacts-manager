@@ -2,19 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ContactsRoutingModule } from './contacts-routing.module';
-import { ListComponent } from './components/list/list.component';
-import { DetailsComponent } from './components/details/details.component';
+import { ContactsComponent } from './components/contacts/contacts.component';
+import { ContactDetailComponent } from './components/contact-detail/contact-detail.component';
+import { MaterialModule } from '../material/material.module';
+import { ContactCreateComponent } from './components/contact-create/contact-create.component';
 
 const COMPONENTS = [
-    ListComponent,
-    DetailsComponent
+    ContactsComponent,
+    ContactDetailComponent
 ]
 
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [...COMPONENTS, ContactCreateComponent],
   imports: [
     CommonModule,
-    ContactsRoutingModule
+    ContactsRoutingModule,
+    MaterialModule
   ],
   exports: [...COMPONENTS]
 })

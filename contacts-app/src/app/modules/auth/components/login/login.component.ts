@@ -18,7 +18,7 @@ export class LoginComponent {
             const response = await this.authService.login(user) as IUserInfo;
 
             this.storageService.setItem(StorageKeys.User, response);
-            this.router.navigate([""]);
+            this.router.navigate(["/contacts"]);
         } catch (error: any) {
             alert(error.data.message[0].messages[0].message)
         }

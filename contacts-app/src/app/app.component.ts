@@ -9,19 +9,7 @@ import { wait } from './shared/utilities/promise-helpers';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    isLoading: boolean = false;
+    constructor() {}
 
-    constructor(public authService: AuthService, private router: Router) {}
 
-    async logout() {
-        this.isLoading = true;
-        const loggedOut = await this.authService.logout();
-        await wait(1000)
-
-        if (loggedOut) {
-            this.router.navigate([""]);
-        }
-
-        this.isLoading = false;
-    }
 }
