@@ -59,7 +59,7 @@ export class AuthService {
     }
 
     getUserInfo(): IUserInfo {
-        return this.storageService.getItem(StorageKeys.User) as IUserInfo;
+        return this.storageService.getItem<IUserInfo>(StorageKeys.User);
     }
 
     private hasActiveToken(token: string): boolean {

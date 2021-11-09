@@ -1,1 +1,16 @@
-<p>contact-create works!</p>
+<form #createContactForm="ngForm">
+    First name:
+    <input type="text" name="firstName" required [ngModel]="dialogData?.contact?.firstName">
+    Surname:
+    <input type="text" name="surname" [ngModel]="dialogData?.contact?.surname" required>
+    Date of birth:
+    <input type="date" name="DOB" [ngModel]="dialogData?.contact?.DOB" required>
+    Address:
+    <input type="text" name="address" [ngModel]="dialogData?.contact?.address" required>
+    Phone number:
+    <input type="tel" name="phoneNumber" [ngModel]="dialogData?.contact?.phoneNumber" required>
+    IBAN:
+    <input type="number" name="IBAN" [ngModel]="dialogData?.contact?.IBAN" required>
+    <button (click)="saveContact(createContactForm.value)" type="submit"
+        [disabled]="!createContactForm.form.valid">{{dialogData.buttonLabel}}</button>
+</form>

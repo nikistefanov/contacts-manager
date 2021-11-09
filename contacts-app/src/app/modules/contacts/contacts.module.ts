@@ -6,6 +6,7 @@ import { ContactsComponent } from './components/contacts/contacts.component';
 import { ContactDetailComponent } from './components/contact-detail/contact-detail.component';
 import { MaterialModule } from '../material/material.module';
 import { ContactCreateComponent } from './components/contact-create/contact-create.component';
+import { FormsModule } from '@angular/forms';
 
 const COMPONENTS = [
     ContactsComponent,
@@ -17,7 +18,8 @@ const COMPONENTS = [
   imports: [
     CommonModule,
     ContactsRoutingModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule
   ],
   exports: [...COMPONENTS]
 })

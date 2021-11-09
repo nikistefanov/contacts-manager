@@ -1,5 +1,5 @@
 <div>
-    <button mat-raised-button (click)="createContact()">
+    <button mat-raised-button (click)="createEditContact()">
         <mat-icon>add_circle</mat-icon> Create contact
     </button>
 </div>
@@ -7,7 +7,10 @@
     <mat-list-option *ngFor="let contact of contacts" [value]="contact.id">
         {{contact.firstName}}
         {{contact.id}}
-        <mat-icon (click)="deleteContact(contact)" *ngIf="contactsList.selectedOptions.selected[0]?.value === contact.id">delete</mat-icon>
+        <ng-container *ngIf="contactsList.selectedOptions.selected[0]?.value === contact.id">
+            <mat-icon (click)="createEditContact(contact)">edit</mat-icon>
+            <mat-icon (click)="deleteContact(contact)">delete</mat-icon>
+        </ng-container>
     </mat-list-option>
 </mat-selection-list>
 

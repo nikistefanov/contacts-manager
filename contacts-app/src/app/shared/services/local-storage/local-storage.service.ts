@@ -9,7 +9,7 @@ export enum StorageKeys {
 })
 export class LocalStorageService {
 
-    public getItem(key: string): {} {
+    public getItem<T>(key: string): T {
         const item = localStorage.getItem(key);
         return item ? JSON.parse(item) : null;
     }

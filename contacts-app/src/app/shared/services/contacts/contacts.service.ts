@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import axios from 'axios';
+import axios, { Method } from 'axios';
 import { CONTACTS_API, CONTACTS_API_USER_FILTER } from '../../constants/api';
 import { IContact } from '../../models/contact';
 import { IUserInfo } from '../../models/user';
@@ -53,30 +53,11 @@ export class ContactsService {
     }
 
     create(contact: IContact, userInfo: IUserInfo) {
-        return axios
-            .post<IContact>(CONTACTS_API, {
-                firstName: contact.firstName,
-                surname: contact.surname,
-                DOB: contact.DOB,
-                address: contact.address,
-                phoneNumber: contact.phoneNumber,
-                IBAN: contact.IBAN,
-                userId: userInfo.user.id
-            }, {
-                headers: {
-                    Authorization: `Bearer ${userInfo.jwt}`,
-                }
-            })
-            .then(response => {
-                return response.data;
-            })
-            .catch(error => {
-                throw error.response;
-            });
+        return this.createEditContact(contact, userInfo);
     }
 
     async delete(contactId: number | undefined, userInfo: IUserInfo) {
-        const canDelete = await this.canDelete(contactId, userInfo);
+        const canDelete = await this.canManageContact(contactId, userInfo);
 
         if (canDelete) {
             return axios
@@ -96,7 +77,42 @@ export class ContactsService {
         }
     }
 
-    private async canDelete(contactId: number | undefined, userInfo: IUserInfo) {
+    async update(newContact: IContact, updateContactId: number, userInfo: IUserInfo) {
+        const canUpdate = await this.canManageContact(updateContactId, userInfo);
+
+        if (canUpdate) {
+            return this.createEditContact(newContact, userInfo, "PUT", `${CONTACTS_API}/${updateContactId}`);
+        }
+    }
+
+    private createEditContact(contact: IContact, userInfo: IUserInfo, method: Method = "POST", url: string = CONTACTS_API) {
+        return axios({
+            method,
+            url,
+            responseType: "json",
+            data: {
+                firstName: contact.firstName,
+                surname: contact.surname,
+                DOB: contact.DOB,
+                address: contact.address,
+                phoneNumber: contact.phoneNumber,
+                IBAN: contact.IBAN,
+                userId: userInfo.user.id
+            },
+            headers: {
+                Authorization: `Bearer ${userInfo.jwt}`
+            }
+        })
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => {
+            throw error.response;
+        });
+
+    }
+
+    private async canManageContact(contactId: number | undefined, userInfo: IUserInfo) {
         if (!contactId) {
             return false;
         }

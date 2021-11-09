@@ -15,7 +15,7 @@ export class LoginComponent {
 
     async login(user: IUser) {
         try {
-            const response = await this.authService.login(user) as IUserInfo;
+            const response = await this.authService.login(user);
 
             this.storageService.setItem(StorageKeys.User, response);
             this.router.navigate(["/contacts"]);
