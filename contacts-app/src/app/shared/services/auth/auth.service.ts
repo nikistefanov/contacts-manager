@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { IUser, IUserInfo } from '../../models/user';
 import { LocalStorageService, StorageKeys } from '../local-storage/local-storage.service';
-import { API_BASE, AUTH_LOGIN, AUTH_REGISTER } from '../../constants/api';
+import { AUTH_LOGIN, AUTH_REGISTER } from '../../constants/api';
 import axios from 'axios';
 import { convertUnixToDate, decodeToken } from '../../utilities/token-helpers';
 
@@ -20,11 +19,11 @@ export class AuthService {
         return false;
     }
 
-    constructor(private httpClient: HttpClient, private storageService: LocalStorageService) { }
+    constructor(private storageService: LocalStorageService) { }
 
-    async register(user: IUser) {
-        return await axios
-            .post<IUserInfo>(`${API_BASE}/${AUTH_REGISTER}`, {
+    register(user: IUser) {
+        return axios
+            .post<IUserInfo>(AUTH_REGISTER, {
                 username: user.username,
                 email: user.email,
                 password: user.password,
@@ -37,9 +36,9 @@ export class AuthService {
             });
     }
 
-    async login(user: IUser) {
-        return await axios
-            .post<IUserInfo>(`${API_BASE}/${AUTH_LOGIN}`, {
+    login(user: IUser) {
+        return axios
+            .post<IUserInfo>(AUTH_LOGIN, {
                 identifier: user.username,
                 password: user.password,
             })
