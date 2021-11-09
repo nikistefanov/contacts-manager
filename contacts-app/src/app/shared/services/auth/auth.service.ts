@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IUser, IUserInfo } from '../../models/user';
 import { LocalStorageService, StorageKeys } from '../local-storage/local-storage.service';
-import { TokenService } from '../token/token.service';
-import { of, Subject, take, tap } from 'rxjs';
 import { API_BASE, AUTH_LOGIN, AUTH_REGISTER } from '../../constants/api';
+import axios from 'axios';
+import { convertUnixToDate, decodeToken } from '../../utilities/token-helpers';
 
 @Injectable({
     providedIn: 'root'
@@ -20,33 +20,43 @@ export class AuthService {
         return false;
     }
 
-    constructor(private httpClient: HttpClient, private storageService: LocalStorageService, private tokenService: TokenService) { }
+    constructor(private httpClient: HttpClient, private storageService: LocalStorageService) { }
 
-    register(user: IUser) {
-        return this.httpClient.post<IUserInfo>(`${API_BASE}/${AUTH_REGISTER}`, {
-            username: user.username,
-            email: user.email,
-            password: user.password,
-        });
+    async register(user: IUser) {
+        return await axios
+            .post<IUserInfo>(`${API_BASE}/${AUTH_REGISTER}`, {
+                username: user.username,
+                email: user.email,
+                password: user.password,
+            })
+            .then(response => {
+                return response.data;
+            })
+            .catch(error => {
+                throw error.response;
+            });
     }
 
-    login(user: IUser) {
-        const login$ = new Subject<IUserInfo>();
-        this.httpClient.post<IUserInfo>(`${API_BASE}/${AUTH_LOGIN}`, {
-            identifier: user.username,
-            password: user.password
-        }).subscribe(
-            data => login$.next(data),
-            error => login$.next(error)
-        );
-
-        return login$;
+    async login(user: IUser) {
+        return await axios
+            .post<IUserInfo>(`${API_BASE}/${AUTH_LOGIN}`, {
+                identifier: user.username,
+                password: user.password,
+            })
+            .then(response => {
+                return response.data;
+            })
+            .catch(error => {
+                throw error.response;
+            });
     }
 
     logout() {
         this.storageService.deleteItem(StorageKeys.User);
 
-        return of(true);
+        return new Promise((resolve) => {
+            resolve(true);
+        });
     }
 
     getUserInfo(): IUserInfo {
@@ -58,8 +68,8 @@ export class AuthService {
             return false;
         }
 
-        const decodedToken = this.tokenService.decode(token);
-        const expirationDate = this.tokenService.convertUnixToDate(decodedToken.exp);
+        const decodedToken = decodeToken(token);
+        const expirationDate = convertUnixToDate(decodedToken.exp);
         const currentDate = new Date();
 
         return expirationDate >= currentDate;

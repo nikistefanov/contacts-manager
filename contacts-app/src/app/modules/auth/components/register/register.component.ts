@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { first, take, tap } from 'rxjs';
-import { IUser } from '../../../../shared/models/user';
+import { IUser, IUserInfo } from '../../../../shared/models/user';
 import { AuthService } from '../../../../shared/services/auth/auth.service';
 import { LocalStorageService, StorageKeys } from '../../../../shared/services/local-storage/local-storage.service';
 
@@ -13,16 +13,14 @@ import { LocalStorageService, StorageKeys } from '../../../../shared/services/lo
 export class RegisterComponent {
     constructor(private authService: AuthService, private router: Router, private storageService: LocalStorageService) {}
 
-    register(user: IUser) {
-        this.authService.register(user).pipe(
-            take(1),
-            tap(res => {
-                this.storageService.setItem(StorageKeys.User, res);
-                this.router.navigate([""]);
-            }, error => {
-                // alert(error.error.data[0].messages[0].message)
-                alert(error);
-            })
-        ).subscribe()
+    async register(user: IUser) {
+        try {
+            const response = await this.authService.register(user) as IUserInfo;
+
+            this.storageService.setItem(StorageKeys.User, response);
+            this.router.navigate([""]);
+        } catch (error: any) {
+            alert(error.data.message[0].messages[0].message)
+        }
     }
 }

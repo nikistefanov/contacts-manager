@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { debounceTime, take, tap } from 'rxjs';
 import { AuthService } from './shared/services/auth/auth.service';
+import { wait } from './shared/utilities/promise-helpers';
 
 @Component({
   selector: 'app-root',
@@ -13,18 +13,15 @@ export class AppComponent {
 
     constructor(public authService: AuthService, private router: Router) {}
 
-    logout() {
+    async logout() {
         this.isLoading = true;
-        this.authService.logout().pipe(
-            take(1),
-            debounceTime(1000),
-            tap(loggedOut => {
-                if (loggedOut) {
-                    this.router.navigate([""]);
-                }
+        const loggedOut = await this.authService.logout();
+        await wait(1000)
 
-                this.isLoading = false;
-            })
-        )
+        if (loggedOut) {
+            this.router.navigate([""]);
+        }
+
+        this.isLoading = false;
     }
 }
