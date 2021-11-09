@@ -5,15 +5,13 @@
 </div>
 <mat-selection-list #contactsList [multiple]="false">
     <mat-list-option *ngFor="let contact of contacts" [value]="contact.id">
-        {{contact.firstName}}
-        {{contact.id}}
-        <ng-container *ngIf="contactsList.selectedOptions.selected[0]?.value === contact.id">
-            <mat-icon (click)="createEditContact(contact)">edit</mat-icon>
-            <mat-icon (click)="deleteContact(contact)">delete</mat-icon>
-        </ng-container>
+        <div class="flex flex-row">
+            {{contact.firstName}}
+            {{contact.id}}
+            <div class="ml-auto" *ngIf="contactsList.selectedOptions.selected[0]?.value === contact.id">
+                <mat-icon (click)="createEditContact(contact)">edit</mat-icon>
+                <mat-icon class="ml-4" (click)="deleteContact(contact)">delete</mat-icon>
+            </div>
+        </div>
     </mat-list-option>
 </mat-selection-list>
-
-<p>
-    Option selected: {{contactsList.selectedOptions.selected[0]?.value}}
-</p>

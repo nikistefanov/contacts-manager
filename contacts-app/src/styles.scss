@@ -3,5 +3,6 @@
 
 // Vendors
 @include meta.load-css("styles/vendors/material");
+@include meta.load-css("styles/vendors/tailwind");
 
 @include meta.load-css("styles/layout");
