@@ -4,6 +4,8 @@
 /out-tsc
 /vendor
 /app/logs
+.cache
+.tmp
 
 # dependencies
 /node_modules
