@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from './shared/services/auth/auth.service';
-import { wait } from './shared/utilities/promise-helpers';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +6,4 @@ import { wait } from './shared/utilities/promise-helpers';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    constructor() {}
-
-
 }

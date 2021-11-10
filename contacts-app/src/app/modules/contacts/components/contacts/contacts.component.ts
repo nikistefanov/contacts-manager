@@ -5,6 +5,7 @@ import { ContactsService } from '../../../../shared/services/contacts/contacts.s
 import { MatDialog } from '@angular/material/dialog';
 import { ContactCreateComponent, IContactCreateDialogData } from '../contact-create/contact-create.component';
 import { AuthService } from '../../../../shared/services/auth/auth.service';
+import {first, tap} from "rxjs";
 
 
 @Component({
@@ -13,16 +14,26 @@ import { AuthService } from '../../../../shared/services/auth/auth.service';
     styleUrls: ['./contacts.component.scss']
 })
 export class ContactsComponent implements OnInit {
-    private userInfo: IUserInfo;
-    public contacts: IContact[];
-    typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
+    private userInfo!: IUserInfo;
+    public contacts!: IContact[];
+    public isLoading: boolean = true;
 
     constructor(public authService: AuthService, public contactService: ContactsService, public dialog: MatDialog) { }
 
-    async ngOnInit() {
+    ngOnInit() {
         this.userInfo = this.authService.getUserInfo();
-
-        this.contacts = await this.contactService.getAllByUser(this.userInfo);
+        this.contactService.getAllByUser(this.userInfo).pipe(
+            first(),
+            tap({
+                next: contacts => {
+                    this.contacts = contacts;
+                    this.isLoading = false;
+                },
+                error: error => {
+                    alert(error.data.message[0].messages[0].message)
+                }
+            })
+        ).subscribe();
     }
 
     createEditContact(contact?: IContact) {
@@ -41,43 +52,49 @@ export class ContactsComponent implements OnInit {
         });
     }
 
-    async deleteContact(contact: IContact) {
-        try {
-            await this.contactService.delete(contact.id, this.userInfo)
-
+    deleteContact(contact: IContact) {
+        this.contactService.delete(contact.id, this.userInfo).pipe(
+            first()
+        ).subscribe(() => {
             this.contacts.splice(this.contacts.findIndex(i => i.id === contact.id), 1)
-        } catch (error) {
-            alert(error)
-        }
+        });
     }
 
     private updateOrCreateContact(contact: IContact, updateContactId?: number) {
         if (updateContactId) {
-            this.tryUpdateContact(contact, updateContactId);
+            this.updateContact(contact, updateContactId);
         } else {
-            this.tryCreateContact(contact);
+            this.createContact(contact);
         }
     }
 
-    private async tryUpdateContact(contact: IContact, updateContactId: number) {
-        try {
-            const updatedContact = await this.contactService.update(contact, updateContactId, this.userInfo);
-            const index = this.contacts.findIndex(c => c.id === updatedContact.id);
+    private updateContact(contact: IContact, updateContactId: number) {
+        this.contactService.update(contact, updateContactId, this.userInfo).pipe(
+            first(),
+            tap({
+                next: contact => {
+                    const index = this.contacts.findIndex(c => c.id === contact.id);
 
-            this.contacts[index] = updatedContact;
-        } catch (error) {
-            console.log(error);
-
-        }
+                    this.contacts[index] = contact;
+                },
+                error: error => {
+                    alert(error.data.message[0].messages[0].message)
+                }
+            })
+        ).subscribe();
     }
 
-    private async tryCreateContact(contact: IContact) {
-        try {
-            const newContact = await this.contactService.create(contact, this.userInfo);
-
-            this.contacts.push(newContact);
-        } catch (error: any) {
-            alert(error.data.message[0].messages[0].message)
-        }
+    private createContact(contact: IContact) {
+        this.contactService.create(contact, this.userInfo).pipe(
+            first(),
+            tap({
+                next: response => {
+                    this.contacts.push(response);
+                },
+                error: error => {
+                    alert(error.data.message[0].messages[0].message)
+                }
+            })
+        ).subscribe();
     }
 }

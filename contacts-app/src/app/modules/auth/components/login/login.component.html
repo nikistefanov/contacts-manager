@@ -3,7 +3,7 @@
         <div class="mb-5">
             <mat-form-field class="w-full" appearance="fill">
                 <mat-label>Username</mat-label>
-                <input #username="ngModel" ngModel type="text" name="username" matInput placeholder="Username" required>
+                <input #username="ngModel" [(ngModel)]="formDataModel.username" type="text" name="username" matInput placeholder="Username" required>
                 <mat-error *ngIf="username?.errors">
                     <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>
                 </mat-error>
@@ -12,7 +12,7 @@
         <div class="mb-5">
             <mat-form-field class="w-full" appearance="fill">
                 <mat-label>Password</mat-label>
-                <input #password="ngModel" ngModel type="password" name="password" matInput placeholder="Password" required>
+                <input #password="ngModel" [(ngModel)]="formDataModel.password" type="password" name="password" matInput placeholder="Password" required>
                 <mat-error *ngIf="password?.errors">
                     <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>
                 </mat-error>

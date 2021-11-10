@@ -3,18 +3,17 @@ import { CommonModule } from '@angular/common';
 
 import { ContactsRoutingModule } from './contacts-routing.module';
 import { ContactsComponent } from './components/contacts/contacts.component';
-import { ContactDetailComponent } from './components/contact-detail/contact-detail.component';
 import { MaterialModule } from '../material/material.module';
 import { ContactCreateComponent } from './components/contact-create/contact-create.component';
 import { FormsModule } from '@angular/forms';
 
 const COMPONENTS = [
     ContactsComponent,
-    ContactDetailComponent
+    ContactCreateComponent
 ]
 
 @NgModule({
-  declarations: [...COMPONENTS, ContactCreateComponent],
+  declarations: [...COMPONENTS],
   imports: [
     CommonModule,
     ContactsRoutingModule,

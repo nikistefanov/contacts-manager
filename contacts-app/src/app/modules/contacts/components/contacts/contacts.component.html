@@ -1,17 +1,23 @@
-<div>
-    <button mat-raised-button (click)="createEditContact()">
-        <mat-icon>add_circle</mat-icon> Create contact
-    </button>
-</div>
-<mat-selection-list #contactsList [multiple]="false">
-    <mat-list-option *ngFor="let contact of contacts" [value]="contact.id">
-        <div class="flex flex-row">
-            {{contact.firstName}}
-            {{contact.id}}
-            <div class="ml-auto" *ngIf="contactsList.selectedOptions.selected[0]?.value === contact.id">
-                <mat-icon (click)="createEditContact(contact)">edit</mat-icon>
-                <mat-icon class="ml-4" (click)="deleteContact(contact)">delete</mat-icon>
-            </div>
-        </div>
-    </mat-list-option>
-</mat-selection-list>
+ <ng-container *ngIf="!isLoading; else loadingTmpl">
+     <div>
+         <button mat-raised-button (click)="createEditContact()">
+             <mat-icon>add_circle</mat-icon> Create contact
+         </button>
+     </div>
+     <mat-selection-list #contactsList [multiple]="false">
+         <mat-list-option *ngFor="let contact of contacts" [value]="contact.id">
+             <div class="flex flex-row">
+                 {{contact.firstName}}
+                 {{contact.id}}
+                 <div class="ml-auto" *ngIf="contactsList.selectedOptions.selected[0]?.value === contact.id">
+                     <mat-icon (click)="createEditContact(contact)">edit</mat-icon>
+                     <mat-icon class="ml-4" (click)="deleteContact(contact)">delete</mat-icon>
+                 </div>
+             </div>
+         </mat-list-option>
+     </mat-selection-list>
+</ng-container>
+
+<ng-template #loadingTmpl>
+    Loading...
+</ng-template>

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { first, take, tap } from 'rxjs';
-import { IUser, IUserInfo, IUserRegistration } from '../../../../shared/models/user';
+import { first, tap } from 'rxjs';
+import { RoutePaths } from '../../../../shared/constants/route-paths';
+import { IUser } from '../../../../shared/models/user';
 import { AuthService } from '../../../../shared/services/auth/auth.service';
 import { LocalStorageService, StorageKeys } from '../../../../shared/services/local-storage/local-storage.service';
+import { getDefaultUserValues } from '../../../../shared/utilities/user-helpers';
 
 @Component({
   selector: 'app-register',
@@ -12,24 +13,23 @@ import { LocalStorageService, StorageKeys } from '../../../../shared/services/lo
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
-    password: FormControl;
-    confirmPassword: FormControl;
+    formDataModel: IUser = getDefaultUserValues()
+
     constructor(private authService: AuthService, private router: Router, private storageService: LocalStorageService) {}
 
-    async register(data: IUserRegistration) {
-        try {
-            const user: IUser = {
-                username: data.username,
-                email: data.email,
-                password: data.passwords.password
-            }
-            const response = await this.authService.register(user) as IUserInfo;
-
-            this.storageService.setItem(StorageKeys.User, response);
-            this.router.navigate([""]);
-        } catch (error: any) {
-            alert(error.data.message[0].messages[0].message)
-        }
+    register(user: IUser) {
+        this.authService.register(user).pipe(
+            first(),
+            tap({
+                next: response => {
+                    this.storageService.setItem(StorageKeys.User, response);
+                    this.router.navigate([RoutePaths.Base]);
+                },
+                error: error => {
+                    alert(error.data.message[0].messages[0].message)
+                }
+            })
+        ).subscribe();
     }
 
     getError(errors: any) {

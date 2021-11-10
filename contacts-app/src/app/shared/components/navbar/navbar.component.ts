@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
-import { wait } from '../../utilities/promise-helpers';
+import {first, tap} from "rxjs";
+import {RoutePaths} from "../../constants/route-paths";
 
 @Component({
     selector: 'app-navbar',
@@ -13,16 +14,21 @@ export class NavbarComponent {
 
     constructor(public authService: AuthService, private router: Router) { }
 
-    async logout() {
+    logout() {
         this.isLoading = true;
-        const loggedOut = await this.authService.logout();
 
-        if (loggedOut) {
-            this.router.navigate([""]);
-            await wait(1000)
-        }
-
-        this.isLoading = false;
+        this.authService.logout().pipe(
+            first(),
+            tap({
+                next: response => {
+                    this.router.navigate([RoutePaths.Base]);
+                    this.isLoading = false;
+                },
+                error: error => {
+                    this.isLoading = false;
+                }
+            })
+        ).subscribe();
     }
 
 }

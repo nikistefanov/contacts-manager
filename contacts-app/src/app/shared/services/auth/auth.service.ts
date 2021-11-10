@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { IUser, IUserInfo } from '../../models/user';
 import { LocalStorageService, StorageKeys } from '../local-storage/local-storage.service';
 import { AUTH_LOGIN, AUTH_REGISTER } from '../../constants/api';
-import axios from 'axios';
 import { convertUnixToDate, decodeToken } from '../../utilities/token-helpers';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -12,50 +13,30 @@ export class AuthService {
     get isLogged(): boolean {
         const user: IUserInfo = this.getUserInfo();
 
-        if (user && this.hasActiveToken(user.jwt)) {
-            return true;
-        }
-
-        return false;
+        return user && this.hasActiveToken(user.jwt);
     }
 
-    constructor(private storageService: LocalStorageService) { }
+    constructor(private storageService: LocalStorageService, private httpClient: HttpClient) { }
 
-    register(user: IUser) {
-        return axios
-            .post<IUserInfo>(AUTH_REGISTER, {
-                username: user.username,
-                email: user.email,
-                password: user.password,
-            })
-            .then(response => {
-                return response.data;
-            })
-            .catch(error => {
-                throw error.response;
-            });
+    register(user: IUser): Observable<IUserInfo> {
+        return this.httpClient.post<IUserInfo>(AUTH_REGISTER, {
+            username: user.username,
+            email: user.email,
+            password: user.password,
+        });
     }
 
-    login(user: IUser) {
-        return axios
-            .post<IUserInfo>(AUTH_LOGIN, {
-                identifier: user.username,
-                password: user.password,
-            })
-            .then(response => {
-                return response.data;
-            })
-            .catch(error => {
-                throw error.response;
-            });
+    login(user: IUser): Observable<IUserInfo> {
+        return this.httpClient.post<IUserInfo>(AUTH_LOGIN, {
+            identifier: user.username,
+            password: user.password,
+        });
     }
 
-    logout() {
+    logout(): Observable<boolean> {
         this.storageService.deleteItem(StorageKeys.User);
 
-        return new Promise((resolve) => {
-            resolve(true);
-        });
+        return of(true);
     }
 
     getUserInfo(): IUserInfo {

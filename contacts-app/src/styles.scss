@@ -1,10 +1,13 @@
-
 @use "sass:meta";
+
+// html, body { height: 100%; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
 
 @include meta.load-css("styles/fonts");
 
 // Vendors
-@include meta.load-css("styles/vendors/material");
 @include meta.load-css("styles/vendors/tailwind");
 
 @include meta.load-css("styles/layout");
