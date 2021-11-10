@@ -1,6 +1,6 @@
 <app-card title="Login">
     <form #loginForm="ngForm">
-        <div>
+        <div class="mb-5">
             <mat-form-field class="w-full" appearance="fill">
                 <mat-label>Username</mat-label>
                 <input #username="ngModel" ngModel type="text" name="username" matInput placeholder="Username" required>
@@ -9,9 +9,9 @@
                 </mat-error>
             </mat-form-field>
         </div>
-        <div class="mt-5 mb-5">
+        <div class="mb-5">
             <mat-form-field class="w-full" appearance="fill">
-                <mat-label>Username</mat-label>
+                <mat-label>Password</mat-label>
                 <input #password="ngModel" ngModel type="password" name="password" matInput placeholder="Password" required>
                 <mat-error *ngIf="password?.errors">
                     <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>

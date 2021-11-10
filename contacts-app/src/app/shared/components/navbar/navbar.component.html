@@ -3,14 +3,18 @@
         <img class="pr-2 max-h-full" src="assets/images/contacts-app-logo.png" alt="">
         <span>ContactMe</span>
         <span class="example-spacer"></span>
-        <ul class="flex gap-3 ml-auto ng-star-inserted" *ngIf="!authService.isLogged; else loggedUser">
-            <li>
-                <a [routerLink]="['login']">Login</a>
-            </li>
-            <li>
-                <a [routerLink]="['register']">Register</a>
-            </li>
-        </ul>
+        <div *ngIf="authService.isLogged" class="ml-auto">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>account_circle</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before" class="p-5">
+                <mat-slide-toggle (click)="$event.stopPropagation();">Dark mode</mat-slide-toggle>
+                <button (click)="logout()" mat-menu-item class="mt-2">
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                </button>
+            </mat-menu>
+        </div>
         <div class="sm:hidden">
             <button mat-icon-button>
                 <mat-icon>menu</mat-icon>
@@ -19,11 +23,7 @@
     </mat-toolbar>
 </nav>
 <ng-template #loggedUser>
-    Hi, {{authService.getUserInfo().user.username}}
-    <button mat-raised-button (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        Logout
-    </button>
+
 </ng-template>
 
 <ng-template #loading>
