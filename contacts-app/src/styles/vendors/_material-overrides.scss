@@ -1,0 +1,6 @@
+@use "../settings/colors";
+
+.mat-drawer-container,
+.mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: colors.$background-color;
+}

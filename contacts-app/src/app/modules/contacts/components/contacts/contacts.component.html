@@ -1,21 +1,26 @@
- <ng-container *ngIf="!isLoading; else loadingTmpl">
-     <div>
-         <button mat-raised-button (click)="createEditContact()">
-             <mat-icon>add_circle</mat-icon> Create contact
-         </button>
-     </div>
-     <mat-selection-list #contactsList [multiple]="false">
-         <mat-list-option *ngFor="let contact of contacts" [value]="contact.id">
-             <div class="flex flex-row">
-                 {{contact.firstName}}
-                 {{contact.id}}
-                 <div class="ml-auto" *ngIf="contactsList.selectedOptions.selected[0]?.value === contact.id">
-                     <mat-icon (click)="createEditContact(contact)">edit</mat-icon>
-                     <mat-icon class="ml-4" (click)="deleteContact(contact)">delete</mat-icon>
-                 </div>
-             </div>
-         </mat-list-option>
-     </mat-selection-list>
+<ng-container *ngIf="!isLoading; else loadingTmpl">
+    <div class="mb-5 flex justify-between">
+        <h1>{{userInfo.user.username}}'s Contacts</h1>
+        <button mat-raised-button color="accent" (click)="createEditContact()">
+            <mat-icon>add_circle</mat-icon> Create contact
+        </button>
+    </div>
+    <mat-selection-list #contactsList [multiple]="false">
+        <mat-list-option *ngFor="let contact of contacts; let first = first" [value]="contact.id" class="border-b"
+            [class.border-t]="first">
+            <div class="flex">
+                <span>{{contact.firstName}}</span>
+                <span>{{contact.surname}}</span>
+                <span>{{contact.phoneNumber}}</span>
+                <div class="ml-auto" *ngIf="contactsList.selectedOptions.selected[0]?.value === contact.id">
+                    <mat-icon color="primary" (click)="createEditContact(contact)">edit</mat-icon>
+                    <mat-icon color="primary" class="ml-4" (click)="deleteContact(contact)">delete</mat-icon>
+                </div>
+            </div>
+        </mat-list-option>
+    </mat-selection-list>
+    <app-data-table [displayedColumns]="displayedColumns2" [displayedHeaders]="displayedHeaders2" [data]="contacts">
+    </app-data-table>
 </ng-container>
 
 <ng-template #loadingTmpl>
