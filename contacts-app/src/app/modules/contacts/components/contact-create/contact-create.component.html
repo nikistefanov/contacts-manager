@@ -1,16 +1,75 @@
-<form #createContactForm="ngForm">
-    First name:
-    <input type="text" name="firstName" required [ngModel]="dialogData?.contact?.firstName">
-    Surname:
-    <input type="text" name="surname" [ngModel]="dialogData?.contact?.surname" required>
-    Date of birth:
-    <input type="date" name="DOB" [ngModel]="dialogData?.contact?.DOB" required>
-    Address:
-    <input type="text" name="address" [ngModel]="dialogData?.contact?.address" required>
-    Phone number:
-    <input type="tel" name="phoneNumber" [ngModel]="dialogData?.contact?.phoneNumber" required>
-    IBAN:
-    <input type="number" name="IBAN" [ngModel]="dialogData?.contact?.IBAN" required>
-    <button (click)="saveContact(createContactForm.value)" type="submit"
-        [disabled]="!createContactForm.form.valid">{{dialogData.buttonLabel}}</button>
-</form>
+<h1 mat-dialog-title>{{dialogData.label}} contact</h1>
+<div mat-dialog-content>
+    <form #createContactForm="ngForm">
+        <div class="mb-5">
+            <mat-form-field class="w-full" appearance="fill">
+                <mat-label>First name</mat-label>
+                <input #firstName="ngModel" [(ngModel)]="formDataModel.firstName" type="text" name="firstName" matInput
+                    placeholder="First name" required>
+                <mat-error *ngIf="firstName?.errors">
+                    <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="mb-5">
+            <mat-form-field class="w-full" appearance="fill">
+                <mat-label>Surname</mat-label>
+                <input #surname="ngModel" [(ngModel)]="formDataModel.surname" type="text" name="surname" matInput
+                    placeholder="Surname" required>
+                <mat-error *ngIf="surname?.errors">
+                    <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="mb-5">
+            <mat-form-field class="w-full" appearance="fill">
+                <mat-label>Date of birth</mat-label>
+                <input #DOB="ngModel" [(ngModel)]="formDataModel.DOB" matInput [matDatepicker]="picker" name="DOB"
+                    placeholder="Date of birth" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="DOB?.errors">
+                    <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="mb-5">
+            <mat-form-field class="w-full" appearance="fill">
+                <mat-label>Address</mat-label>
+                <input #address="ngModel" [(ngModel)]="formDataModel.address" type="text" name="address" matInput
+                    placeholder="address" required>
+                <mat-error *ngIf="address?.errors">
+                    <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="mb-5">
+            <mat-form-field class="w-full" appearance="fill">
+                <mat-label>Phone number</mat-label>
+                <input #phoneNumber="ngModel" [(ngModel)]="formDataModel.phoneNumber" type="tel" name="phoneNumber"
+                    matInput placeholder="phoneNumber" required>
+                <mat-error *ngIf="phoneNumber?.errors">
+                    <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="mb-5">
+            <mat-form-field class="w-full" appearance="fill">
+                <mat-label>IBAN</mat-label>
+                <input #IBAN="ngModel" [(ngModel)]="formDataModel.IBAN" type="tel" name="IBAN" matInput
+                    placeholder="IBAN" required>
+                <mat-error *ngIf="IBAN?.errors">
+                    <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="saveContact(createContactForm.value)" [disabled]="!createContactForm.form.valid">{{dialogData.label}}</button>
+    <button class="ml-5" mat-raised-button (click)="onCancel()">Cancel</button>
+</div>
+
+<ng-template #requiredMessage>
+    Field is <strong>required</strong>
+</ng-template>

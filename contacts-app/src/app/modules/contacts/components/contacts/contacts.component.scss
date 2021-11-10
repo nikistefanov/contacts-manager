@@ -1,0 +1,32 @@
+.app-table {
+    width: 100%;
+
+    &__header {
+        @apply text-left border-gray-500 bg-gray-200 border-b-2 border-t-2;
+    }
+
+    &__body {
+
+        tr {
+            @apply hover:bg-gray-200 border-b;
+
+            &:nth-child(even) {
+                @apply bg-gray-50 hover:bg-gray-200;
+            }
+        }
+    }
+
+    td:first-child,
+    th:first-child {
+        @apply pl-5;
+    }
+
+    th,
+    td {
+        @apply py-3;
+    }
+
+    th:last-child {
+        @apply pr-5;
+    }
+}

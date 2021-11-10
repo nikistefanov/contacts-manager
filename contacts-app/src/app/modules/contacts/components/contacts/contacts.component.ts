@@ -3,33 +3,13 @@ import { IContact } from '../../../../shared/models/contact';
 import { IUserInfo } from '../../../../shared/models/user';
 import { ContactsService } from '../../../../shared/services/contacts/contacts.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ContactCreateComponent, IContactCreateDialogData } from '../contact-create/contact-create.component';
+import { ContactCreateComponent } from '../contact-create/contact-create.component';
 import { AuthService } from '../../../../shared/services/auth/auth.service';
-import {first, tap} from "rxjs";
-import { DataTableItem } from '../../../../shared/components/data-table/data-table-datasource';
-
-const EXAMPLE_DATA: DataTableItem[] = [
-    { id: 1, name: 'Hydrogen' },
-    { id: 2, name: 'Helium' },
-    { id: 3, name: 'Lithium' },
-    { id: 4, name: 'Beryllium' },
-    { id: 5, name: 'Boron' },
-    { id: 6, name: 'Carbon' },
-    { id: 7, name: 'Nitrogen' },
-    { id: 8, name: 'Oxygen' },
-    { id: 9, name: 'Fluorine' },
-    { id: 10, name: 'Neon' },
-    { id: 11, name: 'Sodium' },
-    { id: 12, name: 'Magnesium' },
-    { id: 13, name: 'Aluminum' },
-    { id: 14, name: 'Silicon' },
-    { id: 15, name: 'Phosphorus' },
-    { id: 16, name: 'Sulfur' },
-    { id: 17, name: 'Chlorine' },
-    { id: 18, name: 'Argon' },
-    { id: 19, name: 'Potassium' },
-    { id: 20, name: 'Calcium' },
-];
+import { first, tap } from "rxjs";
+import { IContactCreateDialogData, IDeleteConfirmation } from '../../../../shared/models/dialog';
+import { ComponentFixture } from '@angular/core/testing';
+import { ComponentType } from '@angular/cdk/overlay';
+import { ContactDeleteComponent } from '../contact-delete/contact-delete.component';
 
 @Component({
     selector: 'app-contacts',
@@ -40,11 +20,6 @@ export class ContactsComponent implements OnInit {
     public userInfo!: IUserInfo;
     public contacts!: IContact[];
     public isLoading: boolean = true;
-    public displayedColumns = ["id", "name"];
-    public displayedHeaders = ['Numero', 'Name'];
-    public displayedColumns2 = ["firstName", "surname"];
-    public displayedHeaders2 = ['First name', 'Surname'];
-    public data = EXAMPLE_DATA;
 
     constructor(public authService: AuthService, public contactService: ContactsService, public dialog: MatDialog) { }
 
@@ -64,23 +39,23 @@ export class ContactsComponent implements OnInit {
         ).subscribe();
     }
 
-    createEditContact(contact?: IContact) {
-        const dialogData: IContactCreateDialogData = {
-            buttonLabel: contact ? "Save" : "Create",
-            ...(contact && { contact })
-        };
-        const dialogRef = this.dialog.open(ContactCreateComponent, {
-            data: dialogData
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.updateOrCreateContact(result, contact?.id);
-            }
-        });
+    onDelete(contact: IContact) {
+        const data: IDeleteConfirmation = {
+            messege: `Are you sure want to delete <b>${contact.firstName} ${contact.surname}</b> from your contact list`
+        }
+        this.openDialog(data, ContactDeleteComponent, this.deleteContact.bind(this, contact));
     }
 
-    deleteContact(contact: IContact) {
+    onUpdateContact(contact: IContact) {
+        const contactData = Object.assign({}, contact);
+        this.openDialog({label: "Update", contact: contactData}, ContactCreateComponent, this.updateContact.bind(this), contactData.id);
+    }
+
+    onCreateContact() {
+        this.openDialog({label: "Create"}, ContactCreateComponent, this.createContact.bind(this))
+    }
+
+    private deleteContact(contact: IContact) {
         this.contactService.delete(contact.id, this.userInfo).pipe(
             first()
         ).subscribe(() => {
@@ -88,12 +63,17 @@ export class ContactsComponent implements OnInit {
         });
     }
 
-    private updateOrCreateContact(contact: IContact, updateContactId?: number) {
-        if (updateContactId) {
-            this.updateContact(contact, updateContactId);
-        } else {
-            this.createContact(contact);
-        }
+    private openDialog(dialogData: IContactCreateDialogData | IDeleteConfirmation, component: ComponentType<ContactCreateComponent | ContactDeleteComponent>, cb: Function, updateContactId?: number) {
+        const dialogRef = this.dialog.open(component, {
+            data: dialogData,
+            panelClass: "w-7/12"
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                cb(result, updateContactId);
+            }
+        });
     }
 
     private updateContact(contact: IContact, updateContactId: number) {

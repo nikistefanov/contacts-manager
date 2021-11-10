@@ -3,6 +3,8 @@ import { IContact } from '../../../../shared/models/contact';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IUserInfo } from '../../../../shared/models/user';
 import { AuthService } from '../../../../shared/services/auth/auth.service';
+import { getEmptyContactValues } from '../../../../shared/utilities/contact-helpers';
+import { IContactCreateDialogData } from '../../../../shared/models/dialog';
 
 @Component({
     selector: 'app-contact-create',
@@ -10,7 +12,9 @@ import { AuthService } from '../../../../shared/services/auth/auth.service';
     styleUrls: ['./contact-create.component.scss']
 })
 export class ContactCreateComponent  {
-    @Input() dialogData: IContactCreateDialogData;
+    public dialogData: IContactCreateDialogData;
+    public formDataModel: IContact = getEmptyContactValues();
+
     private userInfo: IUserInfo;
 
     constructor(
@@ -19,6 +23,11 @@ export class ContactCreateComponent  {
         private authService: AuthService
     ) {
         this.dialogData = data;
+
+        if (data.contact) {
+            this.formDataModel = data.contact
+        }
+
         this.userInfo = this.authService.getUserInfo();
 
     }
@@ -28,10 +37,9 @@ export class ContactCreateComponent  {
 
         this.dialogRef.close(contact);
     }
-}
 
-export interface IContactCreateDialogData {
-    buttonLabel?: string;
-    contact?: IContact;
+    onCancel() {
+        this.dialogRef.close();
+    }
 }
 
