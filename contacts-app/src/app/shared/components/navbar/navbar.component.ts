@@ -20,11 +20,11 @@ export class NavbarComponent {
         this.authService.logout().pipe(
             first(),
             tap({
-                next: response => {
+                next: () => {
                     this.router.navigate([RoutePaths.Base]);
                     this.isLoading = false;
                 },
-                error: error => {
+                error: () => {
                     this.isLoading = false;
                 }
             })

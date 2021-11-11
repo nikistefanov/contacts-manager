@@ -74,7 +74,7 @@ export class ContactsComponent implements OnInit {
     private openDialog(dialogData: IContactCreateDialogData | IDeleteConfirmation, component: ComponentType<ContactCreateComponent | ConfirmDeleteComponent>, cb: Function, updateContactId?: number) {
         const dialogRef = this.dialog.open(component, {
             data: dialogData,
-            panelClass: ["w-full", "md:w-7/12"]
+            panelClass: ["w-full", "md-lg:w-7/12"]
         });
 
         dialogRef.afterClosed().subscribe(result => {

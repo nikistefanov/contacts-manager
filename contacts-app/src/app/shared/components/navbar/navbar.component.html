@@ -1,9 +1,10 @@
 <nav>
     <mat-toolbar color="primary">
         <div class="lg:container lg:mx-auto w-full px-5 md:px-7 xl:px-14 h-full flex items-center justify-between">
-            <img class="pr-2 max-h-9" src="assets/images/contacts-app-logo.png" alt="">
-            <span>ContactMe</span>
-            <span class="example-spacer"></span>
+            <div class="flex">
+                <img class="pr-2 max-h-9" src="assets/images/contacts-app-logo.png" alt="">
+                <span>ContactMe</span>
+            </div>
             <div *ngIf="authService.isLogged" class="ml-auto">
                 <button mat-icon-button [matMenuTriggerFor]="menu">
                     <mat-icon>account_circle</mat-icon>
@@ -18,7 +19,3 @@
         </div>
     </mat-toolbar>
 </nav>
-
-<ng-template #loading>
-    Loading...
-</ng-template>
