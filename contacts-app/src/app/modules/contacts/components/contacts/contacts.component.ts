@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IContact } from '../../../../shared/models/contact';
 import { IUserInfo } from '../../../../shared/models/user';
 import { ContactsService } from '../../../../shared/services/contacts/contacts.service';
@@ -15,8 +15,7 @@ import { ErrorHandlerService } from '../../../../shared/services/error-handler/e
 @Component({
     selector: 'app-contacts',
     templateUrl: './contacts.component.html',
-    styleUrls: ['./contacts.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    styleUrls: ['./contacts.component.scss']
 })
 export class ContactsComponent implements OnInit {
     public userInfo!: IUserInfo;
@@ -57,10 +56,6 @@ export class ContactsComponent implements OnInit {
 
     onCreateContact() {
         this.openDialog({label: "Create"}, ContactCreateComponent, this.createContact.bind(this))
-    }
-
-    objectKeys(obj: Object) {
-        return Object.keys(obj);
     }
 
     private deleteContact(contact: IContact) {
