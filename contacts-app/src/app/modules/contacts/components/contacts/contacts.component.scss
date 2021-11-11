@@ -3,16 +3,21 @@
 
     &__header {
         @apply text-left border-gray-500 bg-gray-200 border-b-2 border-t-2;
+
+        display: none;
     }
 
     &__body {
 
         tr {
-            @apply hover:bg-gray-200 border-b;
-
-            &:nth-child(even) {
-                @apply bg-gray-50 hover:bg-gray-200;
+            &:nth-child(odd) {
+                @apply bg-gray-50 border-gray-200 border-b-2;
             }
+        }
+
+        td {
+            display: flex;
+            justify-content: space-between;
         }
     }
 
@@ -30,3 +35,92 @@
         @apply pr-5;
     }
 }
+
+@screen lg {
+    .app-table {
+
+        &__header {
+            display: table-header-group;
+        }
+
+        &__body {
+
+            td {
+                display: table-cell;
+            }
+        }
+    }
+}
+
+
+// .app-test {
+
+//     &__row {
+//         display: flex;
+//         flex-direction: column;
+
+//         &.-header {
+//             display: none;
+//             background-color: #E5E7EB;
+//             border-bottom: 2px solid #D1D5DB;
+
+//             .app-test__row-item {
+//                 font-weight: bold;
+//             }
+//         }
+
+//         &:nth-of-type(even) {
+//             background-color: #F9FAFB;
+//             border-bottom: 1px solid #E5E7EB;
+//         }
+
+
+//     }
+//     &__row-item {
+//         display: flex;
+//         flex: 1;
+//         padding: 10px;
+//         white-space: nowrap;
+//         justify-content: space-between;
+
+//         &.-xs {
+//             flex: 0 0 50px;
+//         }
+
+//         &.-sm {
+//             flex: 0 0 80px;
+//         }
+
+//         &.-md {
+//             flex: 0 0 120px;
+//         }
+
+//         &.-action-desktop {
+//             display: none;
+//         }
+//     }
+// }
+
+// @screen lg {
+//     .app-test {
+
+//         &__row {
+//             flex-direction: row;
+
+//             &.-header {
+//                 display: flex
+//             }
+//         }
+
+//         &__row-item {
+
+//             &.-action-mobile {
+//                 display: none;
+//             }
+
+//             &.-action-desktop {
+//                 display: flex;
+//             }
+//         }
+//     }
+// }

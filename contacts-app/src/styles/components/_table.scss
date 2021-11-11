@@ -1,0 +1,207 @@
+.app-table-module .app-table-row-stack {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap
+}
+
+.app-table-module .app-table-row-stack .heading-section {
+    -ms-flex-preferred-size: 33.33%;
+    flex-basis: 33.33%;
+    max-width: 33.33%;
+    padding: 0 2.5rem 0 0
+}
+
+@media(max-width:977px) {
+    .app-table-module .app-table-row-stack .heading-section {
+        -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+        max-width: 100%
+    }
+}
+
+.app-table-module .app-table-row-stack .app-table-section {
+    -ms-flex-preferred-size: 66.66%;
+    flex-basis: 66.66%;
+    max-width: 66.66%
+}
+
+@media(max-width:977px) {
+    .app-table-module .app-table-row-stack .app-table-section {
+        -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+        max-width: 100%
+    }
+}
+
+@media(max-width:767px) {
+    .app-table-module .app-table-row-stack .app-table-section {
+        padding: 1.5rem 0;
+        border-bottom: .25rem solid
+    }
+}
+
+.app-table-module h2 {
+    margin-bottom: 0;
+    padding-bottom: 1.5rem
+}
+
+.app-table-module .heading-section {
+    padding-bottom: 1.5rem
+}
+
+@media(max-width:600px) {
+    .app-table-module .heading-section {
+        padding-bottom: 1.5rem
+    }
+}
+
+.app-table-module .app-table-section .app-table {
+    font-size: 1rem;
+    line-height: 1.5
+}
+
+.app-table-module .app-table-section .app-table-header {
+    display: none
+}
+
+@media(min-width:768px) {
+    .app-table-module .app-table-section .app-table-header {
+        font-weight: 700;
+        background-color: #F3F4F6
+    }
+}
+
+.app-table-module .app-table-section .app-table-row {
+    width: 100%;
+    border-bottom: 1px solid #ddd
+}
+
+.app-table-module .app-table-section .app-table-row:nth-of-type(odd) {
+    background-color: #F3F4F6
+}
+
+.app-table-module .app-table-section .app-table-row:nth-of-type(even) {
+    background-color: #fff
+}
+
+@media(min-width:768px) {
+    .app-table-module .app-table-section .app-table-row {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex
+    }
+}
+
+@media(max-width:767px) {
+    .app-table-module .app-table-section .app-table-row:nth-of-type(odd) {
+        background-color: #fff
+    }
+
+    .app-table-module .app-table-section .app-table-row:nth-of-type(even) {
+        background-color: #F3F4F6
+    }
+}
+
+.app-table-module .app-table-section .app-table-row.app-table-header {
+    background-color: #eee;
+    border-top: 2px solid #000;
+    border-bottom: 0
+}
+
+.app-table-module .app-table-section .app-table-row.app-table-header .app-table-row-item:first-child {
+    text-align: left
+}
+
+.app-table-module .app-table-section .app-table-row-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    padding: 1rem;
+    word-break: break-word
+}
+
+@media(min-width:977px) {
+    .app-table-module .app-table-section .app-table-row-item {
+        display: block
+    }
+}
+
+@media(min-width:977px) {
+    .app-table-module .app-table-section .app-table-row-item:first-child {
+        text-align: left
+    }
+}
+
+@media(max-width:767px) {
+    .app-table-module .app-table-section .app-table-row-item:first-child {
+        padding-top: 1.5rem
+    }
+}
+
+@media(max-width:767px) {
+    .app-table-module .app-table-section .app-table-row-item:last-child {
+        padding-bottom: 1.5rem
+    }
+}
+
+.app-table-module .app-table-section .app-table-row-item span {
+    display: none
+}
+
+@media(max-width:767px) {
+    .app-table-module .app-table-section .app-table-row-item span {
+        display: block;
+        width: 50%;
+        padding-right: .75rem;
+        font-weight: 700
+    }
+}
+
+@media(max-width:767px) {
+    .app-table-module .app-table-section .app-table-row-item div {
+        width: 50%;
+        padding-left: .75rem;
+        text-align: right
+    }
+}
+
+.app-table-module .app-table-section .rate-section {
+    padding: 1rem 1rem;
+    border-top: .5rem solid
+}
+
+@media(min-width:767px) {
+    .app-table-module .app-table-section .rate-section {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between
+    }
+}
+
+@media(max-width:767px) {
+    .app-table-module .app-table-section .rate-section {
+        border-bottom: .25rem solid
+    }
+}
+
+.app-table-module .app-table-section .rate-section h3 {
+    text-align: left;
+    margin-bottom: 0
+}
+
+.app-table-module .app-table-section .rate-section a {
+    text-decoration: underline
+}
+
+
+.app-table-module .app-table-section .rates-description {
+    padding-top: 4rem
+}

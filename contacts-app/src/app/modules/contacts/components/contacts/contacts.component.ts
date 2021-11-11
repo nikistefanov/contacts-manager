@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { IContact } from '../../../../shared/models/contact';
 import { IUserInfo } from '../../../../shared/models/user';
 import { ContactsService } from '../../../../shared/services/contacts/contacts.service';
@@ -7,19 +7,21 @@ import { ContactCreateComponent } from '../contact-create/contact-create.compone
 import { AuthService } from '../../../../shared/services/auth/auth.service';
 import { first, tap } from "rxjs";
 import { IContactCreateDialogData, IDeleteConfirmation } from '../../../../shared/models/dialog';
-import { ComponentFixture } from '@angular/core/testing';
 import { ComponentType } from '@angular/cdk/overlay';
 import { ContactDeleteComponent } from '../contact-delete/contact-delete.component';
+import { CONTACTS_HEADERS_MAP } from '../../../../shared/constants/contacts';
 
 @Component({
     selector: 'app-contacts',
     templateUrl: './contacts.component.html',
-    styleUrls: ['./contacts.component.scss']
+    styleUrls: ['./contacts.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class ContactsComponent implements OnInit {
     public userInfo!: IUserInfo;
     public contacts!: IContact[];
     public isLoading: boolean = true;
+    public contactsHeaders: string[] = CONTACTS_HEADERS_MAP;
 
     constructor(public authService: AuthService, public contactService: ContactsService, public dialog: MatDialog) { }
 
@@ -53,6 +55,10 @@ export class ContactsComponent implements OnInit {
 
     onCreateContact() {
         this.openDialog({label: "Create"}, ContactCreateComponent, this.createContact.bind(this))
+    }
+
+    objectKeys(obj: Object) {
+        return Object.keys(obj);
     }
 
     private deleteContact(contact: IContact) {

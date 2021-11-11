@@ -1,12 +1,4 @@
 <app-navbar></app-navbar>
-<mat-sidenav-container>
-    <mat-sidenav #snav [mode]="'over'">
-        <mat-nav-list>
-            <a mat-list-item>Test</a>
-        </mat-nav-list>
-    </mat-sidenav>
-
-    <mat-sidenav-content class="pt-24 pb-44 container mx-auto">
-        <router-outlet></router-outlet>
-    </mat-sidenav-content>
-</mat-sidenav-container>
+<main class="pt-24 pb-44 container mx-auto px-6">
+    <router-outlet ></router-outlet>
+</main>

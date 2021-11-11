@@ -1,12 +1,12 @@
 <ng-container *ngIf="!isLoading; else loadingTmpl">
     <div class="mb-5 flex justify-between">
         <h1>{{userInfo.user.username}}'s Contacts</h1>
-        <button mat-raised-button color="primary" (click)="onCreateContact()">
+        <button class="hidden sm:block" mat-raised-button color="primary" (click)="onCreateContact()">
             <mat-icon>add_circle</mat-icon> Create contact
         </button>
     </div>
 
-    <table class="w-full app-table">
+    <table class="app-table">
         <thead class="app-table__header">
             <tr>
                 <th></th>
@@ -21,13 +21,33 @@
         </thead>
         <tbody class="app-table__body">
             <tr *ngFor="let contact of contacts; let i = index">
-                <td>{{i}}</td>
-                <td>{{contact.firstName}}</td>
-                <td>{{contact.surname}}</td>
-                <td>{{contact.DOB}}</td>
-                <td>{{contact.address}}</td>
-                <td>{{contact.phoneNumber}}</td>
-                <td>{{contact.IBAN}}</td>
+                <td class="hidden lg:table-cell">
+                    <b></b>
+                    <div>{{i}}</div>
+                </td>
+
+                <td>
+                    <b class="lg:hidden">First name</b>
+                    <div>{{contact.firstName}}</div>
+                </td>
+
+                <td>
+                    <b class="lg:hidden">Surname</b>
+                    <div>{{contact.surname}}</div>
+                </td>
+
+                <td>
+                    <b class="lg:hidden">Date of birth</b>
+                    <div>{{contact.DOB}}</div>
+                </td>
+
+                <td>
+                    <b class="lg:hidden">Address</b>
+                    <div>{{contact.address}}</div></td>
+
+                <td><b class="lg:hidden">Phone number</b><div>{{contact.phoneNumber}}</div></td>
+
+                <td><b class="lg:hidden">IBAN</b><div>{{contact.IBAN}}</div></td>
                 <td class="w-1/12 text-right">
                     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                         <mat-icon>more_vert</mat-icon>
@@ -46,8 +66,23 @@
             </tr>
         </tbody>
     </table>
+    <button class="sm:hidden fixed bottom-3 right-3" mat-fab color="accent" title="Create contact"
+        aria-label="Create contact" (click)="onCreateContact()">
+        <mat-icon>add</mat-icon>
+    </button>
 </ng-container>
 
 <ng-template #loadingTmpl>
     Loading...
+</ng-template>
+
+<ng-template #actions let-contact>
+    <button class="text-center" (click)="onUpdateContact(contact)" mat-menu-item>
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+    </button>
+    <button class="text-center" (click)="onDelete(contact)" mat-menu-item>
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+    </button>
 </ng-template>
