@@ -1,17 +1,17 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { IDeleteConfirmation } from '../../../../shared/models/dialog';
+import { IDeleteConfirmation } from '../../../models/dialog';
 
 @Component({
-  selector: 'app-contact-delete',
-  templateUrl: './contact-delete.component.html',
-  styleUrls: ['./contact-delete.component.scss']
+  selector: 'app-confirm-delete',
+  templateUrl: './confirm-delete.component.html',
+  styleUrls: ['./confirm-delete.component.scss']
 })
-export class ContactDeleteComponent {
+export class ConfirmDeleteComponent {
     public dialogData: IDeleteConfirmation;
 
     constructor(
-        public dialogRef: MatDialogRef<ContactDeleteComponent>,
+        public dialogRef: MatDialogRef<ConfirmDeleteComponent>,
         @Inject(MAT_DIALOG_DATA) public data: IDeleteConfirmation
     ) {
         this.dialogData = data;

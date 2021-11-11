@@ -6,11 +6,13 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { CheckPasswordDirective } from './directives/check-password.directive';
 import { LoaderComponent } from './components/loader/loader.component';
+import { ConfirmDeleteComponent } from './components/dialog/confirm-delete/confirm-delete.component';
 
 const COMPONENTS = [
     CardComponent,
     NavbarComponent,
-    LoaderComponent
+    LoaderComponent,
+    ConfirmDeleteComponent
 ]
 
 const DIRECTIVES = [

@@ -8,8 +8,8 @@ import { AuthService } from '../../../../shared/services/auth/auth.service';
 import { delay, first, tap } from "rxjs";
 import { IContactCreateDialogData, IDeleteConfirmation } from '../../../../shared/models/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
-import { ContactDeleteComponent } from '../contact-delete/contact-delete.component';
 import { CONTACTS_HEADERS_MAP } from '../../../../shared/constants/contacts';
+import { ConfirmDeleteComponent } from '../../../../shared/components/dialog/confirm-delete/confirm-delete.component';
 
 @Component({
     selector: 'app-contacts',
@@ -46,7 +46,7 @@ export class ContactsComponent implements OnInit {
         const data: IDeleteConfirmation = {
             messege: `Are you sure want to delete <b class="whitespace-nowrap">${contact.firstName} ${contact.surname}</b> from your contact list`
         }
-        this.openDialog(data, ContactDeleteComponent, this.deleteContact.bind(this, contact));
+        this.openDialog(data, ConfirmDeleteComponent, this.deleteContact.bind(this, contact));
     }
 
     onUpdateContact(contact: IContact) {
@@ -70,7 +70,7 @@ export class ContactsComponent implements OnInit {
         });
     }
 
-    private openDialog(dialogData: IContactCreateDialogData | IDeleteConfirmation, component: ComponentType<ContactCreateComponent | ContactDeleteComponent>, cb: Function, updateContactId?: number) {
+    private openDialog(dialogData: IContactCreateDialogData | IDeleteConfirmation, component: ComponentType<ContactCreateComponent | ConfirmDeleteComponent>, cb: Function, updateContactId?: number) {
         const dialogRef = this.dialog.open(component, {
             data: dialogData,
             panelClass: "md:w-7/12"

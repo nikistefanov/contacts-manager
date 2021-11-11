@@ -7,12 +7,10 @@ import { MaterialModule } from '../material/material.module';
 import { ContactCreateComponent } from './components/contact-create/contact-create.component';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
-import { ContactDeleteComponent } from './components/contact-delete/contact-delete.component';
 
 const COMPONENTS = [
     ContactsComponent,
-    ContactCreateComponent,
-    ContactDeleteComponent
+    ContactCreateComponent
 ]
 
 @NgModule({
