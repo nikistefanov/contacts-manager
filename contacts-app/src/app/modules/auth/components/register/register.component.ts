@@ -4,6 +4,7 @@ import { first, tap } from 'rxjs';
 import { RoutePaths } from '../../../../shared/constants/route-paths';
 import { IUser } from '../../../../shared/models/user';
 import { AuthService } from '../../../../shared/services/auth/auth.service';
+import { ErrorHandlerService } from '../../../../shared/services/error-handler/error-handler.service';
 import { LocalStorageService, StorageKeys } from '../../../../shared/services/local-storage/local-storage.service';
 import { getDefaultUserValues } from '../../../../shared/utilities/user-helpers';
 
@@ -14,8 +15,9 @@ import { getDefaultUserValues } from '../../../../shared/utilities/user-helpers'
 })
 export class RegisterComponent {
     formDataModel: IUser = getDefaultUserValues()
+    error = null;
 
-    constructor(private authService: AuthService, private router: Router, private storageService: LocalStorageService) {}
+    constructor(private authService: AuthService, private router: Router, private storageService: LocalStorageService, private errorHandler: ErrorHandlerService) {}
 
     register(user: IUser) {
         this.authService.register(user).pipe(
@@ -26,7 +28,8 @@ export class RegisterComponent {
                     this.router.navigate([RoutePaths.Base]);
                 },
                 error: error => {
-                    alert(error.data.message[0].messages[0].message)
+                    this.error = error;
+                    this.errorHandler.handleError(error);
                 }
             })
         ).subscribe();

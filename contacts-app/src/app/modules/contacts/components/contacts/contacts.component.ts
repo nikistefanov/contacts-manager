@@ -10,6 +10,7 @@ import { IContactCreateDialogData, IDeleteConfirmation } from '../../../../share
 import { ComponentType } from '@angular/cdk/overlay';
 import { CONTACTS_HEADERS_MAP } from '../../../../shared/constants/contacts';
 import { ConfirmDeleteComponent } from '../../../../shared/components/dialog/confirm-delete/confirm-delete.component';
+import { ErrorHandlerService } from '../../../../shared/services/error-handler/error-handler.service';
 
 @Component({
     selector: 'app-contacts',
@@ -23,7 +24,7 @@ export class ContactsComponent implements OnInit {
     public isLoading: boolean = true;
     public contactsHeaders: string[] = CONTACTS_HEADERS_MAP;
 
-    constructor(public authService: AuthService, public contactService: ContactsService, public dialog: MatDialog) { }
+    constructor(public authService: AuthService, public contactService: ContactsService, public dialog: MatDialog, private errorHandler: ErrorHandlerService) { }
 
     ngOnInit() {
         this.userInfo = this.authService.getUserInfo();
@@ -36,7 +37,7 @@ export class ContactsComponent implements OnInit {
                     this.isLoading = false;
                 },
                 error: error => {
-                    alert(error.data.message[0].messages[0].message)
+                    this.errorHandler.handleError(error);
                 }
             })
         ).subscribe();
@@ -73,7 +74,7 @@ export class ContactsComponent implements OnInit {
     private openDialog(dialogData: IContactCreateDialogData | IDeleteConfirmation, component: ComponentType<ContactCreateComponent | ConfirmDeleteComponent>, cb: Function, updateContactId?: number) {
         const dialogRef = this.dialog.open(component, {
             data: dialogData,
-            panelClass: "md:w-7/12"
+            panelClass: ["w-full", "md:w-7/12"]
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -93,7 +94,7 @@ export class ContactsComponent implements OnInit {
                     this.contacts[index] = contact;
                 },
                 error: error => {
-                    alert(error.data.message[0].messages[0].message)
+                    this.errorHandler.handleError(error);
                 }
             })
         ).subscribe();
@@ -107,7 +108,7 @@ export class ContactsComponent implements OnInit {
                     this.contacts.push(response);
                 },
                 error: error => {
-                    alert(error.data.message[0].messages[0].message)
+                    this.errorHandler.handleError(error);
                 }
             })
         ).subscribe();

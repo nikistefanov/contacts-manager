@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { LoaderType } from '../../models/loader';
 
 @Component({
     selector: 'app-loader',
@@ -6,5 +7,5 @@ import { Component, Input } from '@angular/core';
     styleUrls: ['./loader.component.scss']
 })
 export class LoaderComponent {
-    @Input() type: string = "default"
+    @Input() type: LoaderType = "default"
 }

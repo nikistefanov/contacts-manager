@@ -1,6 +1,6 @@
 <ng-container *ngIf="!isLoading; else loadingTmpl">
     <ng-container *ngIf="contacts.length > 0; else noResults">
-        <div class="mb-5 flex justify-between px-5 md:px-0">
+        <div class="mb-5 flex justify-between">
             <h1>{{userInfo.user.username}}'s Contacts</h1>
             <div class="hidden sm:block">
                 <ng-container *ngTemplateOutlet="createButton; context: { label: 'Create contact' }"></ng-container>
@@ -21,43 +21,43 @@
             </thead>
             <tbody class="app-table__body">
                 <tr *ngFor="let contact of contacts; let i = index">
-                    <td class="hidden lg:table-cell">
+                    <td class="hidden md-lg:table-cell">
                         <b></b>
                         <div>{{i}}</div>
                     </td>
 
                     <td>
-                        <b class="lg:hidden">First name</b>
+                        <b class="md-lg:hidden">First name</b>
                         <div>{{contact.firstName}}</div>
                     </td>
 
                     <td>
-                        <b class="lg:hidden">Surname</b>
+                        <b class="md-lg:hidden">Surname</b>
                         <div>{{contact.surname}}</div>
                     </td>
 
                     <td>
-                        <b class="lg:hidden">Date of birth</b>
+                        <b class="md-lg:hidden">Date of birth</b>
                         <div>{{contact.DOB}}</div>
                     </td>
 
                     <td>
-                        <b class="lg:hidden">Address</b>
+                        <b class="md-lg:hidden">Address</b>
                         <div>{{contact.address}}</div>
                     </td>
 
-                    <td><b class="lg:hidden">Phone number</b>
+                    <td><b class="md-lg:hidden">Phone number</b>
                         <div>{{contact.phoneNumber}}</div>
                     </td>
 
-                    <td><b class="lg:hidden">IBAN</b>
+                    <td><b class="md-lg:hidden">IBAN</b>
                         <div>{{contact.IBAN}}</div>
                     </td>
-                    <td class="md:w-1/12 text-right">
-                        <div class="hidden md:block">
+                    <td class="md-lg:w-1/12 text-right">
+                        <div class="hidden md-lg:block">
                             <ng-container *ngTemplateOutlet="actionsDesktop; context: { contact }"></ng-container>
                         </div>
-                        <div class="md:hidden flex justify-end w-full">
+                        <div class="md-lg:hidden flex justify-end w-full">
                             <ng-container *ngTemplateOutlet="actionsMobile; context: { contact }"></ng-container>
                         </div>
                     </td>
@@ -78,7 +78,7 @@
 </ng-template>
 
 <ng-template #noResults>
-    <div class="md:w-7/12 mx-auto flex flex-col items-center">
+    <div class="md-lg:w-7/12 mx-auto flex flex-col items-center">
         <h2>No contacts added yet.</h2>
         <ng-container *ngTemplateOutlet="createButton; context: { label: 'Add your first contact' }"></ng-container>
     </div>

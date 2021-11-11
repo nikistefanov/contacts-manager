@@ -29,22 +29,17 @@
         left: 0;
     }
 
-    td:first-child,
-    th:first-child {
-        @apply pl-5;
-    }
-
     th,
     td {
         @apply py-3;
     }
 
-    th:last-child {
-        @apply pr-5;
+    td {
+        @apply px-3;
     }
 }
 
-@screen md {
+@screen md-lg {
     .app-table {
 
         &__header {
@@ -56,6 +51,19 @@
             td {
                 display: table-cell;
             }
+        }
+
+        td:nth-child(2),
+        th:nth-child(2) {
+            @apply pl-5;
+        }
+
+        td:first-child {
+            @apply pl-1;
+        }
+
+        th:last-child {
+            @apply pr-5;
         }
     }
 }
