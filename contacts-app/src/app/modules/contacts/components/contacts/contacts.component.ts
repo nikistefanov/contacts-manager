@@ -5,7 +5,7 @@ import { ContactsService } from '../../../../shared/services/contacts/contacts.s
 import { MatDialog } from '@angular/material/dialog';
 import { ContactCreateComponent } from '../contact-create/contact-create.component';
 import { AuthService } from '../../../../shared/services/auth/auth.service';
-import { first, tap } from "rxjs";
+import { delay, first, tap } from "rxjs";
 import { IContactCreateDialogData, IDeleteConfirmation } from '../../../../shared/models/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
 import { ContactDeleteComponent } from '../contact-delete/contact-delete.component';
@@ -29,6 +29,7 @@ export class ContactsComponent implements OnInit {
         this.userInfo = this.authService.getUserInfo();
         this.contactService.getAllByUser(this.userInfo).pipe(
             first(),
+            delay(1000),
             tap({
                 next: contacts => {
                     this.contacts = contacts;
@@ -43,7 +44,7 @@ export class ContactsComponent implements OnInit {
 
     onDelete(contact: IContact) {
         const data: IDeleteConfirmation = {
-            messege: `Are you sure want to delete <b>${contact.firstName} ${contact.surname}</b> from your contact list`
+            messege: `Are you sure want to delete <b class="whitespace-nowrap">${contact.firstName} ${contact.surname}</b> from your contact list`
         }
         this.openDialog(data, ContactDeleteComponent, this.deleteContact.bind(this, contact));
     }
@@ -72,7 +73,7 @@ export class ContactsComponent implements OnInit {
     private openDialog(dialogData: IContactCreateDialogData | IDeleteConfirmation, component: ComponentType<ContactCreateComponent | ContactDeleteComponent>, cb: Function, updateContactId?: number) {
         const dialogRef = this.dialog.open(component, {
             data: dialogData,
-            panelClass: "w-7/12"
+            panelClass: "md:w-7/12"
         });
 
         dialogRef.afterClosed().subscribe(result => {

@@ -10,6 +10,7 @@
     &__body {
 
         tr {
+
             &:nth-child(odd) {
                 @apply bg-gray-50 border-gray-200 border-b-2;
             }
@@ -18,7 +19,14 @@
         td {
             display: flex;
             justify-content: space-between;
+
+            @apply px-5 md:px-0;
         }
+    }
+
+    &__expander {
+        position: absolute;
+        left: 0;
     }
 
     td:first-child,
@@ -36,7 +44,7 @@
     }
 }
 
-@screen lg {
+@screen md {
     .app-table {
 
         &__header {

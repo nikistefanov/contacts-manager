@@ -5,10 +5,12 @@ import { MaterialModule } from '../modules/material/material.module';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { CheckPasswordDirective } from './directives/check-password.directive';
+import { LoaderComponent } from './components/loader/loader.component';
 
 const COMPONENTS = [
     CardComponent,
-    NavbarComponent
+    NavbarComponent,
+    LoaderComponent
 ]
 
 const DIRECTIVES = [

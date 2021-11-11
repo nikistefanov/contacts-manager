@@ -1,88 +1,118 @@
 <ng-container *ngIf="!isLoading; else loadingTmpl">
-    <div class="mb-5 flex justify-between">
-        <h1>{{userInfo.user.username}}'s Contacts</h1>
-        <button class="hidden sm:block" mat-raised-button color="primary" (click)="onCreateContact()">
-            <mat-icon>add_circle</mat-icon> Create contact
+    <ng-container *ngIf="contacts.length > 0; else noResults">
+        <div class="mb-5 flex justify-between px-5 md:px-0">
+            <h1>{{userInfo.user.username}}'s Contacts</h1>
+            <div class="hidden sm:block">
+                <ng-container *ngTemplateOutlet="createButton; context: { label: 'Create contact' }"></ng-container>
+            </div>
+        </div>
+        <table class="app-table">
+            <thead class="app-table__header">
+                <tr>
+                    <th></th>
+                    <th>First name</th>
+                    <th>Surname</th>
+                    <th>Date of birth</th>
+                    <th>Address</th>
+                    <th>Phone number</th>
+                    <th>IBAN</th>
+                    <th class="w-1/12 text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody class="app-table__body">
+                <tr *ngFor="let contact of contacts; let i = index">
+                    <td class="hidden lg:table-cell">
+                        <b></b>
+                        <div>{{i}}</div>
+                    </td>
+
+                    <td>
+                        <b class="lg:hidden">First name</b>
+                        <div>{{contact.firstName}}</div>
+                    </td>
+
+                    <td>
+                        <b class="lg:hidden">Surname</b>
+                        <div>{{contact.surname}}</div>
+                    </td>
+
+                    <td>
+                        <b class="lg:hidden">Date of birth</b>
+                        <div>{{contact.DOB}}</div>
+                    </td>
+
+                    <td>
+                        <b class="lg:hidden">Address</b>
+                        <div>{{contact.address}}</div>
+                    </td>
+
+                    <td><b class="lg:hidden">Phone number</b>
+                        <div>{{contact.phoneNumber}}</div>
+                    </td>
+
+                    <td><b class="lg:hidden">IBAN</b>
+                        <div>{{contact.IBAN}}</div>
+                    </td>
+                    <td class="md:w-1/12 text-right">
+                        <div class="hidden md:block">
+                            <ng-container *ngTemplateOutlet="actionsDesktop; context: { contact }"></ng-container>
+                        </div>
+                        <div class="md:hidden flex justify-end w-full">
+                            <ng-container *ngTemplateOutlet="actionsMobile; context: { contact }"></ng-container>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="sm:hidden fixed bottom-3 right-3" mat-fab color="accent" title="Create contact"
+            aria-label="Create contact" (click)="onCreateContact()">
+            <mat-icon>add</mat-icon>
         </button>
-    </div>
-
-    <table class="app-table">
-        <thead class="app-table__header">
-            <tr>
-                <th></th>
-                <th>First name</th>
-                <th>Surname</th>
-                <th>Date of birth</th>
-                <th>Address</th>
-                <th>Phone number</th>
-                <th>IBAN</th>
-                <th class="w-1/12 text-right">Action</th>
-            </tr>
-        </thead>
-        <tbody class="app-table__body">
-            <tr *ngFor="let contact of contacts; let i = index">
-                <td class="hidden lg:table-cell">
-                    <b></b>
-                    <div>{{i}}</div>
-                </td>
-
-                <td>
-                    <b class="lg:hidden">First name</b>
-                    <div>{{contact.firstName}}</div>
-                </td>
-
-                <td>
-                    <b class="lg:hidden">Surname</b>
-                    <div>{{contact.surname}}</div>
-                </td>
-
-                <td>
-                    <b class="lg:hidden">Date of birth</b>
-                    <div>{{contact.DOB}}</div>
-                </td>
-
-                <td>
-                    <b class="lg:hidden">Address</b>
-                    <div>{{contact.address}}</div></td>
-
-                <td><b class="lg:hidden">Phone number</b><div>{{contact.phoneNumber}}</div></td>
-
-                <td><b class="lg:hidden">IBAN</b><div>{{contact.IBAN}}</div></td>
-                <td class="w-1/12 text-right">
-                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                        <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu #menu="matMenu" xPosition="before">
-                        <button (click)="onUpdateContact(contact)" mat-menu-item>
-                            <mat-icon>edit</mat-icon>
-                            <span>Edit</span>
-                        </button>
-                        <button (click)="onDelete(contact)" mat-menu-item>
-                            <mat-icon>delete</mat-icon>
-                            <span>Delete</span>
-                        </button>
-                    </mat-menu>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <button class="sm:hidden fixed bottom-3 right-3" mat-fab color="accent" title="Create contact"
-        aria-label="Create contact" (click)="onCreateContact()">
-        <mat-icon>add</mat-icon>
-    </button>
+    </ng-container>
 </ng-container>
 
+
 <ng-template #loadingTmpl>
-    Loading...
+    <app-loader type="heading"></app-loader>
+    <app-loader type="table"></app-loader>
 </ng-template>
 
-<ng-template #actions let-contact>
-    <button class="text-center" (click)="onUpdateContact(contact)" mat-menu-item>
+<ng-template #noResults>
+    <div class="md:w-7/12 mx-auto flex flex-col items-center">
+        <h2>No contacts added yet.</h2>
+        <ng-container *ngTemplateOutlet="createButton; context: { label: 'Add your first contact' }"></ng-container>
+    </div>
+</ng-template>
+
+<ng-template #actionsDesktop let-contact="contact">
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Contact action items">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+        <button (click)="onUpdateContact(contact)" mat-menu-item>
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+        </button>
+        <button (click)="onDelete(contact)" mat-menu-item>
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+        </button>
+    </mat-menu>
+</ng-template>
+
+<ng-template #actionsMobile let-contact="contact">
+    <button class="text-center" (click)="onUpdateContact(contact)" mat-raised-button>
         <mat-icon>edit</mat-icon>
         <span>Edit</span>
     </button>
-    <button class="text-center" (click)="onDelete(contact)" mat-menu-item>
+    <button class="text-center ml-4" (click)="onDelete(contact)" mat-raised-button>
         <mat-icon>delete</mat-icon>
         <span>Delete</span>
+    </button>
+</ng-template>
+
+<ng-template #createButton let-label="label">
+    <button mat-raised-button color="primary" (click)="onCreateContact()">
+        <mat-icon>add_circle</mat-icon> {{label}}
     </button>
 </ng-template>
