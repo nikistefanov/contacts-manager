@@ -6,5 +6,5 @@ export interface IContactCreateDialogData {
 }
 
 export interface IDeleteConfirmation {
-    messege: string;
+    message: string;
 }

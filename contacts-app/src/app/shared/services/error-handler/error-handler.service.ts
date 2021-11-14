@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+const DEFAULT_MESSAGE = "Unexpected error";
+
 @Injectable({
     providedIn: 'root'
 })
@@ -10,19 +12,33 @@ export class ErrorHandlerService {
     constructor(private snackBar: MatSnackBar) { }
 
     public handleError(errorData: any) {
-        const messege = this.getErrorMessege(errorData);
+        const message = this.getErrormessage(errorData);
 
-        this.openSnackBar(messege)
+        this.openSnackBar(message)
     }
 
-    private getErrorMessege(errorData: any) {
-        const messege = errorData?.error?.data[0]?.messages[0]?.message
+    private getErrormessage(errorData: any) {
+        const fieldErrors = errorData?.error?.data?.errors;
+        const serverError = errorData?.error?.data[0]?.messages[0].message;
 
-        return messege;
+        if (fieldErrors) {
+            let message = "";
+            Object.keys(fieldErrors).forEach(x => {
+                message += `${fieldErrors[x]}. `;
+            });
+
+            return message;
+        }
+
+        if (serverError) {
+            return serverError;
+        }
+
+        return DEFAULT_MESSAGE;
     }
 
-    private openSnackBar(messege: string) {
-        this.snackBar.open(messege, "", {
+    private openSnackBar(message: string) {
+        this.snackBar.open(message, "", {
             duration: this.durationInSeconds,
             panelClass: ["bg-red-500", "text-white"],
             verticalPosition: "top"

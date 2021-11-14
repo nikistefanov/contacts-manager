@@ -56,7 +56,7 @@
         <div class="mb-5">
             <mat-form-field class="w-full" appearance="fill">
                 <mat-label>IBAN</mat-label>
-                <input #IBAN="ngModel" [(ngModel)]="formDataModel.IBAN" type="tel" name="IBAN" matInput
+                <input #IBAN="ngModel" [(ngModel)]="formDataModel.IBAN" type="number" name="IBAN" matInput
                     placeholder="IBAN" required>
                 <mat-error *ngIf="IBAN?.errors">
                     <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>

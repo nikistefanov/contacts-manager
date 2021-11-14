@@ -58,7 +58,7 @@ export class ContactsComponent implements OnInit {
 
     onDelete(contact: IContact) {
         const data: IDeleteConfirmation = {
-            messege: `Are you sure want to delete <b class="whitespace-nowrap">${contact.firstName} ${contact.surname}</b> from your contact list`
+            message: `Are you sure want to delete <b class="whitespace-nowrap">${contact.firstName} ${contact.surname}</b> from your contact list`
         }
         this.openDialog(data, ConfirmDeleteComponent, this.deleteContact.bind(this, contact));
     }
