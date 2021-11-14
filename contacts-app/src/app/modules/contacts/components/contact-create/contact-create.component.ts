@@ -8,8 +8,7 @@ import { IContactCreateDialogData } from '../../../../shared/models/dialog';
 
 @Component({
     selector: 'app-contact-create',
-    templateUrl: './contact-create.component.html',
-    styleUrls: ['./contact-create.component.scss']
+    templateUrl: './contact-create.component.html'
 })
 export class ContactCreateComponent  {
     public dialogData: IContactCreateDialogData;

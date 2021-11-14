@@ -6,8 +6,7 @@ import {RoutePaths} from "../../constants/route-paths";
 
 @Component({
     selector: 'app-navbar',
-    templateUrl: './navbar.component.html',
-    styleUrls: ['./navbar.component.scss']
+    templateUrl: './navbar.component.html'
 })
 export class NavbarComponent {
     isLoading: boolean = false;

@@ -3,8 +3,7 @@ import { LoaderType } from '../../models/loader';
 
 @Component({
     selector: 'app-loader',
-    templateUrl: './loader.component.html',
-    styleUrls: ['./loader.component.scss']
+    templateUrl: './loader.component.html'
 })
 export class LoaderComponent {
     @Input() type: LoaderType = "default"
