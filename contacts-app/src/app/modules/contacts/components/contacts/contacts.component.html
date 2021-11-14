@@ -1,59 +1,32 @@
 <ng-container *ngIf="!isLoading; else loadingTmpl">
-    <ng-container *ngIf="contacts.length > 0; else noResults">
+    <ng-container *ngIf="dataSource.data.length > 0; else noResults">
         <div class="mb-5 flex justify-between items-center py-3">
             <h1 class="mb-0">{{userInfo.user.username}}'s Contacts</h1>
             <div class="hidden sm:block">
                 <ng-container *ngTemplateOutlet="createButton; context: { label: 'Create contact' }"></ng-container>
             </div>
         </div>
-        <table class="app-table">
-            <thead class="app-table__header">
-                <tr>
-                    <th></th>
-                    <th>First name</th>
-                    <th>Surname</th>
-                    <th>Date of birth</th>
-                    <th>Address</th>
-                    <th>Phone number</th>
-                    <th>IBAN</th>
-                    <th class="w-1/12 text-right">Action</th>
-                </tr>
-            </thead>
-            <tbody class="app-table__body">
-                <tr *ngFor="let contact of contacts; let i = index">
-                    <td class="hidden md-lg:table-cell">
-                        <b></b>
-                        <div>{{i}}</div>
-                    </td>
 
-                    <td>
-                        <b class="md-lg:hidden">First name</b>
-                        <div>{{contact.firstName}}</div>
-                    </td>
+        <button class="sm:hidden fixed bottom-4 right-4 z-10" mat-fab color="accent" title="Create contact" aria-label="Create contact" (click)="onCreateContact()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </ng-container>
+</ng-container>
 
-                    <td>
-                        <b class="md-lg:hidden">Surname</b>
-                        <div>{{contact.surname}}</div>
+<div [hidden]="dataSource?.data?.length === 0">
+    <table mat-table class="w-full app-table" [class.-loading]="!dataSource">
+        <ng-container *ngFor="let contactColumn of contactColumns; let colIndex = index">
+            <ng-container matColumnDef="{{contactColumn}}">
+                <ng-container *ngIf="contactColumn !== 'actions'">
+                    <th mat-header-cell *matHeaderCellDef>{{contactHeaders[colIndex]}}</th>
+                    <td mat-cell *matCellDef="let contact">
+                        <b class="md-lg:hidden">{{contactHeaders[colIndex]}}</b>
+                        <div>{{contact[contactColumn]}}</div>
                     </td>
-
-                    <td>
-                        <b class="md-lg:hidden">Date of birth</b>
-                        <div>{{contact.DOB}}</div>
-                    </td>
-
-                    <td>
-                        <b class="md-lg:hidden">Address</b>
-                        <div>{{contact.address}}</div>
-                    </td>
-
-                    <td><b class="md-lg:hidden">Phone number</b>
-                        <div>{{contact.phoneNumber}}</div>
-                    </td>
-
-                    <td><b class="md-lg:hidden">IBAN</b>
-                        <div>{{contact.IBAN}}</div>
-                    </td>
-                    <td class="md-lg:w-1/12 text-right">
+                </ng-container>
+                <ng-container *ngIf="contactColumn === 'actions'">
+                    <th mat-header-cell *matHeaderCellDef class="text-right">{{contactHeaders[colIndex]}}</th>
+                    <td mat-cell *matCellDef="let contact" class="text-right">
                         <div class="hidden md-lg:block">
                             <ng-container *ngTemplateOutlet="actionsDesktop; context: { contact }"></ng-container>
                         </div>
@@ -61,16 +34,23 @@
                             <ng-container *ngTemplateOutlet="actionsMobile; context: { contact }"></ng-container>
                         </div>
                     </td>
-                </tr>
-            </tbody>
-        </table>
-        <button class="sm:hidden fixed bottom-3 right-3" mat-fab color="accent" title="Create contact"
-            aria-label="Create contact" (click)="onCreateContact()">
-            <mat-icon>add</mat-icon>
-        </button>
-    </ng-container>
-</ng-container>
+                </ng-container>
+            </ng-container>
+        </ng-container>
 
+        <tr mat-header-row *matHeaderRowDef="contactColumns"></tr>
+        <tr mat-row *matRowDef="let contact; columns: contactColumns"
+            [class.-expanded]="expandedContact === contact"
+            (click)="expandedContact = expandedContact === contact ? null : contact">
+        </tr>
+    </table>
+
+    <div class="app-paginator" [hidden]="!dataSource">
+        <mat-paginator #paginator [length]="dataSource?.data?.length" [pageIndex]="0" [pageSize]="10"
+            [pageSizeOptions]="[5, 10, 20]" aria-label="Select page">
+        </mat-paginator>
+    </div>
+</div>
 
 <ng-template #loadingTmpl>
     <app-loader type="heading"></app-loader>
@@ -82,6 +62,12 @@
         <h2>No contacts added yet.</h2>
         <ng-container *ngTemplateOutlet="createButton; context: { label: 'Add your first contact' }"></ng-container>
     </div>
+</ng-template>
+
+<ng-template #createButton let-label="label">
+    <button mat-raised-button color="primary" (click)="onCreateContact()">
+        <mat-icon>add_circle</mat-icon> {{label}}
+    </button>
 </ng-template>
 
 <ng-template #actionsDesktop let-contact="contact">
@@ -108,11 +94,5 @@
     <button class="text-center ml-4" (click)="onDelete(contact)" mat-raised-button>
         <mat-icon>delete</mat-icon>
         <span>Delete</span>
-    </button>
-</ng-template>
-
-<ng-template #createButton let-label="label">
-    <button mat-raised-button color="primary" (click)="onCreateContact()">
-        <mat-icon>add_circle</mat-icon> {{label}}
     </button>
 </ng-template>

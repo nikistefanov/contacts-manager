@@ -7,14 +7,14 @@ import { RouterModule } from '@angular/router';
 import { CheckPasswordDirective } from './directives/check-password.directive';
 import { LoaderComponent } from './components/loader/loader.component';
 import { ConfirmDeleteComponent } from './components/dialog/confirm-delete/confirm-delete.component';
-import { DataTableComponent } from './components/data-table/data-table.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const COMPONENTS = [
     CardComponent,
     NavbarComponent,
     LoaderComponent,
     ConfirmDeleteComponent,
-    DataTableComponent
+    NotFoundComponent
 ]
 
 const DIRECTIVES = [

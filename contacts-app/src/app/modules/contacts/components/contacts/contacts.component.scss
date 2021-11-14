@@ -1,139 +1,86 @@
-.app-table {
-    width: 100%;
+.mat-table.app-table {
+    @apply w-full;
 
-    &__header {
-        @apply text-left border-gray-500 bg-gray-200 border-b-2 border-t-2;
-
-        display: none;
+    &.-loading {
+        @apply hidden;
     }
 
-    &__body {
+    thead {
+        @apply text-left hidden border-gray-500 bg-gray-200 border-b-2 border-t-2;
 
-        tr {
+        .mat-header-cell {
+            @apply px-5 py-3;
+        }
+    }
+
+
+    tbody {
+
+        .mat-row {
+            @apply relative h-auto overflow-hidden block transition-all duration-300 cursor-pointer;
+            max-height: 46px;
+
+            &.-expanded {
+                max-height: 500px;
+
+                .mat-cell:first-of-type::before {
+                    content: "\2228";
+                }
+            }
 
             &:nth-child(odd) {
-                @apply bg-gray-50 border-gray-200 border-b-2;
+                @apply bg-gray-50 border-gray-200;
             }
         }
 
-        td {
-            display: flex;
-            justify-content: space-between;
+        .mat-cell {
+            @apply pr-2 pl-7 py-3 flex justify-between;
 
-            @apply px-5 md:px-0;
+            &:first-of-type::before {
+                @apply absolute left-2 border-0 font-bold;
+
+                content: "\2227";
+            }
         }
     }
+}
 
-    &__expander {
-        position: absolute;
-        left: 0;
+.app-paginator {
+    .mat-paginator-container {
+        @apply justify-start;
     }
 
-    th,
-    td {
-        @apply py-3;
-        @apply px-2;
+    .mat-paginator-range-label {
+        @apply mx-1;
     }
 }
 
 @screen md-lg {
-    .app-table {
+    .mat-table.app-table {
 
-        &__header {
-            display: table-header-group;
+        thead {
+            @apply table-header-group;
         }
 
-        &__body {
+        tbody {
 
-            td {
-                display: table-cell;
+            .mat-row {
+                @apply table-row cursor-default;
+            }
+
+            .mat-cell {
+                @apply table-cell px-5;
+
+                &:first-of-type::before {
+                    @apply hidden;
+                }
             }
         }
+    }
 
-        td:nth-child(2),
-        th:nth-child(2) {
-            @apply pl-5;
-        }
-
-        td:first-child {
-            @apply pl-1;
-        }
-
-        th:last-child {
-            @apply pr-5;
+    .app-paginator {
+        .mat-paginator-container {
+            @apply justify-end;
         }
     }
 }
-
-
-// .app-test {
-
-//     &__row {
-//         display: flex;
-//         flex-direction: column;
-
-//         &.-header {
-//             display: none;
-//             background-color: #E5E7EB;
-//             border-bottom: 2px solid #D1D5DB;
-
-//             .app-test__row-item {
-//                 font-weight: bold;
-//             }
-//         }
-
-//         &:nth-of-type(even) {
-//             background-color: #F9FAFB;
-//             border-bottom: 1px solid #E5E7EB;
-//         }
-
-
-//     }
-//     &__row-item {
-//         display: flex;
-//         flex: 1;
-//         padding: 10px;
-//         white-space: nowrap;
-//         justify-content: space-between;
-
-//         &.-xs {
-//             flex: 0 0 50px;
-//         }
-
-//         &.-sm {
-//             flex: 0 0 80px;
-//         }
-
-//         &.-md {
-//             flex: 0 0 120px;
-//         }
-
-//         &.-action-desktop {
-//             display: none;
-//         }
-//     }
-// }
-
-// @screen lg {
-//     .app-test {
-
-//         &__row {
-//             flex-direction: row;
-
-//             &.-header {
-//                 display: flex
-//             }
-//         }
-
-//         &__row-item {
-
-//             &.-action-mobile {
-//                 display: none;
-//             }
-
-//             &.-action-desktop {
-//                 display: flex;
-//             }
-//         }
-//     }
-// }
