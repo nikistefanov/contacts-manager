@@ -11,7 +11,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -29,7 +28,6 @@ const MATERIAL_MODULES = [
     MatSlideToggleModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatSnackBarModule

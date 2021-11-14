@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { IContact } from '../../../../shared/models/contact';
 import { IUserInfo } from '../../../../shared/models/user';
 import { ContactsService } from '../../../../shared/services/contacts/contacts.service';
@@ -10,18 +10,33 @@ import { IContactCreateDialogData, IDeleteConfirmation } from '../../../../share
 import { ComponentType } from '@angular/cdk/overlay';
 import { ConfirmDeleteComponent } from '../../../../shared/components/dialog/confirm-delete/confirm-delete.component';
 import { ErrorHandlerService } from '../../../../shared/services/error-handler/error-handler.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { CONTACTS_COLUMNS_MAP, CONTACTS_HEADERS_MAP } from '../../../../shared/utilities/contact-helpers';
+import { ContactsDataTableDataSource } from './contacts-data-table-datasource';
 
 @Component({
-    selector: 'app-contacts',
-    templateUrl: './contacts.component.html',
-    styleUrls: ['./contacts.component.scss']
+    selector: 'app-contacts-data-table',
+    templateUrl: './contacts-data-table.component.html',
+    styleUrls: ['./contacts-data-table.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
-export class ContactsComponent implements OnInit {
+export class ContactsDataTableComponent implements OnInit {
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatTable, { static: false}) table!: MatTable<IContact>;
+
     public userInfo!: IUserInfo;
     public contacts!: IContact[];
     public isLoading: boolean = true;
+    public contactHeaders: string[];
+    public contactColumns: string[];
+    public dataSource!: MatTableDataSource<IContact>;
+    public expandedContact!: IContact;
 
-    constructor(public authService: AuthService, public contactService: ContactsService, public dialog: MatDialog, private errorHandler: ErrorHandlerService) { }
+    constructor(public authService: AuthService, public contactService: ContactsService, public dialog: MatDialog, private errorHandler: ErrorHandlerService) {
+        this.contactHeaders = CONTACTS_HEADERS_MAP;
+        this.contactColumns = CONTACTS_COLUMNS_MAP;
+    }
 
     ngOnInit() {
         this.userInfo = this.authService.getUserInfo();
@@ -30,7 +45,8 @@ export class ContactsComponent implements OnInit {
             delay(1000),
             tap({
                 next: contacts => {
-                    this.contacts = contacts;
+                    this.setupTable(contacts);
+
                     this.isLoading = false;
                 },
                 error: error => {
@@ -83,8 +99,8 @@ export class ContactsComponent implements OnInit {
             tap({
                 next: contact => {
                     const index = this.contacts.findIndex(c => c.id === contact.id);
-
                     this.contacts[index] = contact;
+                    this.dataSource.data = this.contacts;
                 },
                 error: error => {
                     this.errorHandler.handleError(error);
@@ -105,5 +121,12 @@ export class ContactsComponent implements OnInit {
                 }
             })
         ).subscribe();
+    }
+
+    private setupTable(contacts: IContact[]) {
+        this.dataSource = new MatTableDataSource<IContact>(contacts);
+        this.contacts = contacts;
+        this.dataSource.paginator = this.paginator;
+        this.table.dataSource = this.dataSource;
     }
 }

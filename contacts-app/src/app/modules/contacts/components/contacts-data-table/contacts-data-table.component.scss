@@ -1,0 +1,86 @@
+.mat-table.app-table {
+    @apply w-full;
+
+    &.-loading {
+        @apply hidden;
+    }
+
+    thead {
+        @apply text-left hidden border-gray-500 bg-gray-200 border-b-2 border-t-2;
+
+        .mat-header-cell {
+            @apply px-5 py-3;
+        }
+    }
+
+
+    tbody {
+
+        .mat-row {
+            @apply relative h-auto overflow-hidden block transition-all duration-300 cursor-pointer;
+            max-height: 46px;
+
+            &.-expanded {
+                max-height: 500px;
+
+                .mat-cell:first-of-type::before {
+                    content: "\2228";
+                }
+            }
+
+            &:nth-child(odd) {
+                @apply bg-gray-50 border-gray-200;
+            }
+        }
+
+        .mat-cell {
+            @apply pr-2 pl-7 py-3 flex justify-between;
+
+            &:first-of-type::before {
+                @apply absolute left-2 border-0 font-bold;
+
+                content: "\2227";
+            }
+        }
+    }
+}
+
+.app-paginator {
+    .mat-paginator-container {
+        @apply justify-start;
+    }
+
+    .mat-paginator-range-label {
+        @apply mx-1;
+    }
+}
+
+@screen md-lg {
+    .mat-table.app-table {
+
+        thead {
+            @apply table-header-group;
+        }
+
+        tbody {
+
+            .mat-row {
+                @apply table-row cursor-default;
+            }
+
+            .mat-cell {
+                @apply table-cell px-5;
+
+                &:first-of-type::before {
+                    @apply hidden;
+                }
+            }
+        }
+    }
+
+    .app-paginator {
+        .mat-paginator-container {
+            @apply justify-end;
+        }
+    }
+}
