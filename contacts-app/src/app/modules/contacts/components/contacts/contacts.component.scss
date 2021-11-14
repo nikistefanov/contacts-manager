@@ -6,7 +6,7 @@
     }
 
     thead {
-        @apply text-left hidden border-gray-500 bg-gray-200 border-b-2 border-t-2;
+        @apply text-left hidden border-gray-500 bg-gray-200 border-b-2;
 
         .mat-header-cell {
             @apply px-5 py-3;

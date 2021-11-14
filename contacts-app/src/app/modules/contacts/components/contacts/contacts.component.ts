@@ -33,7 +33,10 @@ export class ContactsComponent implements OnInit {
 
     private contacts!: IContact[];
 
-    constructor(private authService: AuthService, private rootService: RootService, private dialog: MatDialog, private errorHandler: ErrorHandlerService) {
+    constructor(private authService: AuthService,
+                private rootService: RootService,
+                private dialog: MatDialog,
+                private errorHandler: ErrorHandlerService) {
         this.contactHeaders = CONTACTS_HEADERS_MAP;
         this.contactColumns = CONTACTS_COLUMNS_MAP;
     }

@@ -1,6 +1,6 @@
 <ng-container *ngIf="!isLoading; else loadingTmpl">
     <ng-container *ngIf="dataSource.data.length > 0; else noResults">
-        <div class="mb-5 flex justify-between items-center py-3">
+        <div class="flex justify-between items-center py-3 sticky top-0 bg-white z-30 border-gray-500 border-b-2">
             <h1 class="mb-0">{{userInfo.user.username}}'s Contacts</h1>
             <div class="hidden sm:block">
                 <ng-container *ngTemplateOutlet="createButton; context: { label: 'Create contact' }"></ng-container>
@@ -53,7 +53,7 @@
 </div>
 
 <ng-template #loadingTmpl>
-    <app-loader type="heading"></app-loader>
+    <app-loader class="block mb-3 mt-3" type="heading"></app-loader>
     <app-loader type="table"></app-loader>
 </ng-template>
 
