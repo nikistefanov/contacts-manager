@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { IUser, IUserInfo } from '../../models/user';
-import { LocalStorageService, StorageKeys } from '../local-storage/local-storage.service';
-import { AUTH_LOGIN, AUTH_REGISTER } from '../../constants/api';
-import { convertUnixToDate, decodeToken } from '../../utilities/token-helpers';
+import { IUser, IUserInfo } from '../../shared/models/user';
+import { LocalStorageService, StorageKeys } from '../../shared/services/local-storage/local-storage.service';
+import { AUTH_LOGIN, AUTH_REGISTER } from '../../shared/constants/api';
+import { convertUnixToDate, decodeToken } from '../../shared/utilities/token-helpers';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from "rxjs";
 

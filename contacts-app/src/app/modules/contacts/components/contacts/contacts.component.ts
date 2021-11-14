@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { IContact } from '../../../../shared/models/contact';
 import { IUserInfo } from '../../../../shared/models/user';
-import { ContactsService } from '../../../../shared/services/contacts/contacts.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ContactCreateComponent } from '../contact-create/contact-create.component';
-import { AuthService } from '../../../../shared/services/auth/auth.service';
+import { AuthService } from '../../../auth/auth.service';
 import { delay, first, tap } from "rxjs";
 import { IContactCreateDialogData, IDeleteConfirmation } from '../../../../shared/models/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
@@ -13,6 +12,7 @@ import { ErrorHandlerService } from '../../../../shared/services/error-handler/e
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { CONTACTS_COLUMNS_MAP, CONTACTS_HEADERS_MAP } from '../../../../shared/utilities/contact-helpers';
+import { RootService } from '../../../http/root.service';
 
 @Component({
     selector: 'app-contacts',
@@ -22,7 +22,7 @@ import { CONTACTS_COLUMNS_MAP, CONTACTS_HEADERS_MAP } from '../../../../shared/u
 })
 export class ContactsComponent implements OnInit {
     @ViewChild(MatPaginator) paginator!: MatPaginator;
-    @ViewChild(MatTable, { static: false}) table!: MatTable<IContact>;
+    @ViewChild(MatTable, { static: false }) table!: MatTable<IContact>;
 
     public userInfo!: IUserInfo;
     public isLoading: boolean = true;
@@ -33,14 +33,14 @@ export class ContactsComponent implements OnInit {
 
     private contacts!: IContact[];
 
-    constructor(public authService: AuthService, public contactService: ContactsService, public dialog: MatDialog, private errorHandler: ErrorHandlerService) {
+    constructor(private authService: AuthService, private rootService: RootService, private dialog: MatDialog, private errorHandler: ErrorHandlerService) {
         this.contactHeaders = CONTACTS_HEADERS_MAP;
         this.contactColumns = CONTACTS_COLUMNS_MAP;
     }
 
     ngOnInit() {
         this.userInfo = this.authService.getUserInfo();
-        this.contactService.getAllByUser(this.userInfo).pipe(
+        this.rootService.contacts.getAllByUser(this.userInfo.user.id).pipe(
             first(),
             delay(1000),
             tap({
@@ -65,18 +65,19 @@ export class ContactsComponent implements OnInit {
 
     onUpdateContact(contact: IContact) {
         const contactData = Object.assign({}, contact);
-        this.openDialog({label: "Update", contact: contactData}, ContactCreateComponent, this.updateContact.bind(this), contactData.id);
+        this.openDialog({ label: "Update", contact: contactData }, ContactCreateComponent, this.updateContact.bind(this), contactData.id);
     }
 
     onCreateContact() {
-        this.openDialog({label: "Create"}, ContactCreateComponent, this.createContact.bind(this))
+        this.openDialog({ label: "Create" }, ContactCreateComponent, this.createContact.bind(this))
     }
 
     private deleteContact(contact: IContact) {
-        this.contactService.delete(contact.id, this.userInfo).pipe(
+        this.rootService.contacts.delete(contact.id).pipe(
             first()
         ).subscribe(() => {
-            this.contacts.splice(this.contacts.findIndex(i => i.id === contact.id), 1)
+            this.contacts.splice(this.contacts.findIndex(i => i.id === contact.id), 1);
+            this.dataSource.data = this.contacts;
         });
     }
 
@@ -94,7 +95,7 @@ export class ContactsComponent implements OnInit {
     }
 
     private updateContact(contact: IContact, updateContactId: number) {
-        this.contactService.update(contact, updateContactId, this.userInfo).pipe(
+        this.rootService.contacts.update(contact, updateContactId, this.userInfo.user.id).pipe(
             first(),
             tap({
                 next: contact => {
@@ -110,11 +111,13 @@ export class ContactsComponent implements OnInit {
     }
 
     private createContact(contact: IContact) {
-        this.contactService.create(contact, this.userInfo).pipe(
+        this.rootService.contacts.create(contact, this.userInfo.user.id).pipe(
             first(),
             tap({
                 next: response => {
                     this.contacts.push(response);
+                    this.dataSource.data = this.contacts;
+                    this.paginator.lastPage();
                 },
                 error: error => {
                     this.errorHandler.handleError(error);
@@ -124,8 +127,8 @@ export class ContactsComponent implements OnInit {
     }
 
     private setupTable(contacts: IContact[]) {
-        this.dataSource = new MatTableDataSource<IContact>(contacts);
         this.contacts = contacts;
+        this.dataSource = new MatTableDataSource<IContact>(contacts);
         this.dataSource.paginator = this.paginator;
         this.table.dataSource = this.dataSource;
     }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth/auth.service';
+import { AuthService } from '../../../modules/auth/auth.service';
 import {first, tap} from "rxjs";
 import {RoutePaths} from "../../constants/route-paths";
 

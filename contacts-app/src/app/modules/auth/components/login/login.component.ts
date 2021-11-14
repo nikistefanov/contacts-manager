@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { first, tap } from 'rxjs';
 import { RoutePaths } from '../../../../shared/constants/route-paths';
 import { IUser } from '../../../../shared/models/user';
-import { AuthService } from '../../../../shared/services/auth/auth.service';
+import { AuthService } from '../../auth.service';
 import { ErrorHandlerService } from '../../../../shared/services/error-handler/error-handler.service';
 import { LocalStorageService, StorageKeys } from '../../../../shared/services/local-storage/local-storage.service';
 import { getDefaultUserValues } from '../../../../shared/utilities/user-helpers';

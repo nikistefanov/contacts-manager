@@ -2,7 +2,7 @@ import { Component, Inject, Input } from '@angular/core';
 import { IContact } from '../../../../shared/models/contact';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IUserInfo } from '../../../../shared/models/user';
-import { AuthService } from '../../../../shared/services/auth/auth.service';
+import { AuthService } from '../../../auth/auth.service';
 import { getEmptyContactValues } from '../../../../shared/utilities/contact-helpers';
 import { IContactCreateDialogData } from '../../../../shared/models/dialog';
 

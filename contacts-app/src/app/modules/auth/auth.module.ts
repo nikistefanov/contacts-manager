@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../../shared/shared.module';
+import { AuthService } from './auth.service';
 
 const COMPONENTS = [
     RegisterComponent,
@@ -24,6 +25,9 @@ const COMPONENTS = [
     MaterialModule,
     SharedModule
   ],
-  exports: [...COMPONENTS]
+  exports: [...COMPONENTS],
+  providers: [
+      AuthService
+  ]
 })
 export class AuthModule { }
