@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { RootService } from './root.service';
 
-describe('RootService', () => {
+xdescribe('RootService', () => {
   let service: RootService;
 
   beforeEach(() => {

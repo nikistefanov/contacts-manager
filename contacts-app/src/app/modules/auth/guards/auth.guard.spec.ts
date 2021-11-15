@@ -1,16 +1,31 @@
-import { TestBed } from '@angular/core/testing';
+import { AuthService } from "../auth.service";
+import { AuthGuard } from "./auth.guard";
 
-import { AuthGuard } from './auth.guard';
+describe("AuthGuard (isolated)", () => {
+    let guard: AuthGuard;
 
-describe('AuthGuard', () => {
-  let guard: AuthGuard;
+    it("should be able to activate route when user is logged", () => {
+        guard = createAuthGuard(true);
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    guard = TestBed.inject(AuthGuard);
-  });
+        expect(guard.canActivate()).toBeTruthy();
+    });
 
-  it('should be created', () => {
-    expect(guard).toBeTruthy();
-  });
+    it("should NOT be able to activate route when user is logged", () => {
+        guard = createAuthGuard(false);
+
+        expect(guard.canActivate()).toBeFalse();
+    });
+
+    function createAuthGuard(canActivate: boolean) {
+        const mockAuthService: Pick<AuthService, "isLogged"> = {
+            isLogged: canActivate
+        };
+
+        const mockRouter = {
+            navigateByUrl: () => {}
+        };
+
+        return new AuthGuard(mockAuthService as any, mockRouter as any);
+    }
 });
+

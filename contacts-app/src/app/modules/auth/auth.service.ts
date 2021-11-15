@@ -16,13 +16,13 @@ export class AuthService {
     get isLogged(): boolean {
         const user: IUserInfo = this.getUserInfo();
 
-        return user && this.hasActiveToken(user.jwt);
+        return !!user && this.hasActiveToken(user.jwt);
     }
 
-    constructor(private storageService: LocalStorageService, private httpClient: HttpClient) { }
+    constructor(private storageService: LocalStorageService, private http: HttpClient) { }
 
     register(user: IUser): Observable<IUserInfo> {
-        return this.httpClient.post<IUserInfo>(AUTH_REGISTER, {
+        return this.http.post<IUserInfo>(AUTH_REGISTER, {
             username: user.username,
             email: user.email,
             password: user.password,
@@ -30,7 +30,7 @@ export class AuthService {
     }
 
     login(user: IUser): Observable<IUserInfo> {
-        return this.httpClient.post<IUserInfo>(AUTH_LOGIN, {
+        return this.http.post<IUserInfo>(AUTH_LOGIN, {
             identifier: user.username,
             password: user.password,
         });

@@ -5,13 +5,13 @@ import { ContactsRoutingModule } from './modules/contacts/contacts-routing.modul
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 import { RoutePaths } from './shared/constants/route-paths';
 
-const routes: Routes = [
+export const appRoutes: Routes = [
     { path: "", redirectTo: RoutePaths.Login, pathMatch: "full" },
     { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes), ContactsRoutingModule, AuthRoutingModule],
+    imports: [RouterModule.forRoot(appRoutes), ContactsRoutingModule, AuthRoutingModule],
     exports: [RouterModule]
 })
 export class AppRoutingModule { }

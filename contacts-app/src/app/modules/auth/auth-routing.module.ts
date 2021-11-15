@@ -4,13 +4,13 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginGuard } from './guards/login.guard';
 
-const routes: Routes = [
+export const authRoutes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
     { path: 'register', component: RegisterComponent, canActivate: [LoginGuard] }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(authRoutes)],
   exports: [RouterModule]
 })
 export class AuthRoutingModule { }

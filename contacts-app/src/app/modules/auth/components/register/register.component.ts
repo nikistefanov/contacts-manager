@@ -24,7 +24,7 @@ export class RegisterComponent {
             tap({
                 next: response => {
                     this.storageService.setItem(StorageKeys.User, response);
-                    this.router.navigate([RoutePaths.Base]);
+                    this.router.navigateByUrl(RoutePaths.Base);
                 },
                 error: error => {
                     this.error = error;

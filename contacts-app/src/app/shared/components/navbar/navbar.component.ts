@@ -20,7 +20,7 @@ export class NavbarComponent {
             first(),
             tap({
                 next: () => {
-                    this.router.navigate([RoutePaths.Base]);
+                    this.router.navigateByUrl(RoutePaths.Base);
                     this.isLoading = false;
                 },
                 error: () => {

@@ -1,0 +1,11 @@
+.app-card {
+    @apply md:w-4/6 lg:w-3/6 xl:w-2/6 mx-auto p-0;
+
+    &__header {
+        @apply pl-7 pr-7;
+    }
+
+    &__content {
+        @apply p-7;
+    }
+}

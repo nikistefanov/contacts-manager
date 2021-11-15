@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmDeleteComponent } from './confirm-delete.component';
 
-describe('ConfirmtDeleteComponent', () => {
+xdescribe('ConfirmtDeleteComponent', () => {
   let component: ConfirmDeleteComponent;
   let fixture: ComponentFixture<ConfirmDeleteComponent>;
 

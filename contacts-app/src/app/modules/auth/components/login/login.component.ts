@@ -23,7 +23,7 @@ export class LoginComponent {
             tap({
                 next: response => {
                     this.storageService.setItem(StorageKeys.User, response);
-                    this.router.navigate([RoutePaths.Contacts]);
+                    this.router.navigateByUrl(RoutePaths.Contacts);
                 },
                 error: error => {
                     this.errorHandler.handleError(error);

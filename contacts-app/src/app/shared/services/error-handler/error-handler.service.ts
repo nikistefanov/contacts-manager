@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-const DEFAULT_MESSAGE = "Unexpected error";
+export const DEFAULT_ERROR_MESSAGE = "Unexpected error";
 
 @Injectable({
     providedIn: 'root'
@@ -34,7 +34,7 @@ export class ErrorHandlerService {
             return serverError;
         }
 
-        return DEFAULT_MESSAGE;
+        return DEFAULT_ERROR_MESSAGE;
     }
 
     private openSnackBar(message: string) {
