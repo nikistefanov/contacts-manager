@@ -1,42 +1,67 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from "@angular/common/http/testing";
+import { Location } from "@angular/common";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterTestingModule } from "@angular/router/testing";
 import { AuthModule } from "../../auth.module";
 import { LoginComponent } from "./login.component";
-import { ACTIVE_USER_INFO, AuthServiceMock, LocalStorageServiceMock, RouterMock } from "../../../../../test-helpers/mocks";
-import { AuthService } from "../../auth.service";
-import { IUser } from "../../../../shared/models/user";
+import { ACTIVE_USER_INFO, LocalStorageServiceMock, USER } from "../../../../../test-helpers/mocks";
+import { AuthService, AUTH_LOGIN } from "../../auth.service";
 import { LocalStorageService, StorageKeys } from "../../../../shared/services/local-storage/local-storage.service";
 import { Router } from "@angular/router";
 import { RoutePaths } from "../../../../shared/constants/route-paths";
+import { SpyLocation } from "@angular/common/testing";
+import { contactsRoutes } from "../../../contacts/contacts-routing.module";
+import { authRoutes } from "../../auth-routing.module";
+import { appRoutes } from "../../../../app-routing.module";
 
-describe("LoginComponent", () => {
+fdescribe("LoginComponent", () => {
     let component: LoginComponent;
     let fixture: ComponentFixture<LoginComponent>;
     let storageService: LocalStorageServiceMock;
     let router: Router;
-    let authService: AuthServiceMock;
+    let httpTestingController: HttpTestingController;
+    let authService: AuthService;
+    let location: Location;
 
-    it("should update user storage info and navigate the user to contacts", () => {
-        const user: IUser = {
-            id: 1,
-            username: "joe",
-            email: "joe@doe.com",
-            password: "password"
-        };
-
+    beforeEach(fakeAsync(() => {
         setup();
-        const routerSpy = spyOn(router, "navigateByUrl");
+    }));
 
-        component.login(user);
+    afterEach(fakeAsync(() => {
+        httpTestingController.verify();
+    }));
 
-        expect(storageService.getItem(StorageKeys.User)).toBe(ACTIVE_USER_INFO)
-        expect(routerSpy).toHaveBeenCalledWith(RoutePaths.Contacts);
-    });
+    it("should update user storage info and navigate the user to contacts when successful login", fakeAsync(() => {
+        component.login(USER);
+        const req: TestRequest = httpTestingController.expectOne(AUTH_LOGIN);
+        expect(req.request.method).toBe("POST");
+
+        req.flush(ACTIVE_USER_INFO);
+        tick();
+
+        expect(storageService.getItem(StorageKeys.User)).toBe(ACTIVE_USER_INFO);
+        expect(location.path()).toBe(RoutePaths.Contacts);
+    }));
+
+    it("should throw an error when wrong credentials are passed", fakeAsync(() => {
+        const errorSpy = spyOn((component as any).errorHandler, "handleError");
+
+        component.login(USER);
+        const req: TestRequest = httpTestingController.expectOne(AUTH_LOGIN);
+        req.flush("error", {
+            status: 400,
+            statusText: "Bad request"
+        });
+        tick();
+
+        expect(storageService.getItem(StorageKeys.User)).not.toBeDefined();
+        expect(location.path()).toBe(RoutePaths.Login);
+        expect(errorSpy).toHaveBeenCalled();
+    }));
 
     function setup() {
         storageService = new LocalStorageServiceMock();
-        authService = new AuthServiceMock(true, true);
 
         TestBed.configureTestingModule({
             declarations: [
@@ -44,17 +69,24 @@ describe("LoginComponent", () => {
             ],
             imports: [
                 AuthModule,
-                RouterTestingModule.withRoutes([]),
-                NoopAnimationsModule],
+                RouterTestingModule.withRoutes([...appRoutes, ...contactsRoutes, ...authRoutes]),
+                NoopAnimationsModule,
+                HttpClientTestingModule],
             providers: [
-                { provide: AuthService, useValue: authService },
+                { provide: Location, useClass: SpyLocation },
                 { provide: LocalStorageService, useValue: storageService }
             ]
         });
 
-        router = TestBed.get(Router);
+        router = TestBed.inject(Router);
+        location = TestBed.inject(Location);
+        httpTestingController = TestBed.inject(HttpTestingController);
+        authService = TestBed.inject(AuthService);
         fixture = TestBed.createComponent(LoginComponent);
         component = fixture.componentInstance;
+
         fixture.detectChanges();
+        router.initialNavigation();
+        tick();
     }
 });

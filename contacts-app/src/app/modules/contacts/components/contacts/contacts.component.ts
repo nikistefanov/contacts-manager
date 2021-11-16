@@ -4,7 +4,7 @@ import { IUserInfo } from '../../../../shared/models/user';
 import { MatDialog } from '@angular/material/dialog';
 import { ContactCreateComponent } from '../contact-create/contact-create.component';
 import { AuthService } from '../../../auth/auth.service';
-import { delay, first, tap } from "rxjs";
+import { catchError, delay, first, of, tap } from "rxjs";
 import { IContactCreateDialogData, IDeleteConfirmation } from '../../../../shared/models/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
 import { ConfirmDeleteComponent } from '../../../../shared/components/dialog/confirm-delete/confirm-delete.component';
@@ -51,10 +51,12 @@ export class ContactsComponent implements OnInit {
                     this.setupTable(contacts);
 
                     this.isLoading = false;
-                },
-                error: error => {
-                    this.errorHandler.handleError(error);
                 }
+            }),
+            catchError(error => {
+                this.errorHandler.handleError(error);
+
+                return of(error);
             })
         ).subscribe();
     }
@@ -105,10 +107,12 @@ export class ContactsComponent implements OnInit {
                     const index = this.contacts.findIndex(c => c.id === contact.id);
                     this.contacts[index] = contact;
                     this.dataSource.data = this.contacts;
-                },
-                error: error => {
-                    this.errorHandler.handleError(error);
                 }
+            }),
+            catchError(error => {
+                this.errorHandler.handleError(error);
+
+                return of(error);
             })
         ).subscribe();
     }
@@ -121,10 +125,12 @@ export class ContactsComponent implements OnInit {
                     this.contacts.push(response);
                     this.dataSource.data = this.contacts;
                     this.paginator.lastPage();
-                },
-                error: error => {
-                    this.errorHandler.handleError(error);
                 }
+            }),
+            catchError(error => {
+                this.errorHandler.handleError(error);
+
+                return of(error);
             })
         ).subscribe();
     }

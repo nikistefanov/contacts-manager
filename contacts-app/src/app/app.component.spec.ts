@@ -1,75 +1,73 @@
 import { SpyLocation } from '@angular/common/testing';
+import { Location } from "@angular/common";
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AuthServiceMock, LocalStorageServiceMock } from '../test-helpers/mocks';
 import { appRoutes } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { authRoutes } from './modules/auth/auth-routing.module';
-import { AuthService } from './modules/auth/auth.service';
-import { LoginComponent } from './modules/auth/components/login/login.component';
-import { AuthGuard } from './modules/auth/guards/auth.guard';
-import { ContactsComponent } from './modules/contacts/components/contacts/contacts.component';
-import { contactsRoutes } from './modules/contacts/contacts-routing.module';
-import { IUser } from './shared/models/user';
-import { LocalStorageService } from './shared/services/local-storage/local-storage.service';
+import { RoutePaths } from './shared/constants/route-paths';
+import { Router } from '@angular/router';
+import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 
-xdescribe('AppComponent', () => {
-    let component: AppComponent;
+const NOT_FOUND_HEADING_SELECTOR = "h1";
+
+fdescribe('AppComponent', () => {
     let fixture: ComponentFixture<AppComponent>;
-    let storageService: LocalStorageServiceMock;
-    let authService: AuthServiceMock;
-    let router: Router;
     let location: Location;
+    let router: Router;
 
-    it('should complete the happy path', fakeAsync(() => {
+    it("should initially navigate to login screen", fakeAsync(() => {
         setup();
+        expect(location.path()).toBe(RoutePaths.Base);
 
-        const user: IUser = {
-            id: 1,
-            username: "joe",
-            email: "joe@doe.com",
-            password: "password"
-        };
-        const loginElement = fixture.debugElement.query(By.directive(LoginComponent));
-        expect(loginElement).toBeDefined();
+        router.initialNavigation();
+        wait();
 
-        loginElement.componentInstance.login(user);
-        tick();
+        expect(location.path()).toBe(RoutePaths.Login);
+        const cardHeader = fixture.debugElement.query(By.css(".app-card__header"));
 
-        debugger;
+        expect(cardHeader).toBeDefined();
+        expect(cardHeader.nativeElement.innerText).toBe("Login");
+    }));
+
+    it("should navigate to not found page if no matching route is found", fakeAsync(() => {
+        setup();
+        expect(location.path()).toBe(RoutePaths.Base);
+
+        router.navigateByUrl("no-result");
+        wait();
+
+        const notFoundComponent = fixture.debugElement.query(By.directive(NotFoundComponent));
+        expect(notFoundComponent).toBeDefined();
+
+        const heading = (notFoundComponent.nativeElement as HTMLElement).querySelector(NOT_FOUND_HEADING_SELECTOR);
+        expect(heading?.innerText).toBe("404");
     }));
 
     function setup() {
-        storageService = new LocalStorageServiceMock();
-        authService = new AuthServiceMock(true, true);
-
         TestBed.configureTestingModule({
             declarations: [
-                AppComponent,
-                LoginComponent,
-                ContactsComponent
+                AppComponent
             ],
             imports: [
                 AppModule,
-                RouterTestingModule.withRoutes([...appRoutes, ...authRoutes, ...contactsRoutes]),
-                NoopAnimationsModule],
+                RouterTestingModule.withRoutes([...appRoutes, ...authRoutes])],
             providers: [
-                { provide: Location, useClass: SpyLocation },
-                { provide: AuthService, useValue: authService },
-                { provide: LocalStorageService, useValue: storageService }
+                { provide: Location, useClass: SpyLocation }
             ]
         });
 
-        router = TestBed.get(Router);
-        location = TestBed.get(Location);
+        location = TestBed.inject(Location);
         fixture = TestBed.createComponent(AppComponent);
-        component = fixture.componentInstance;
+        router = TestBed.inject(Router);
 
-        router.initialNavigation();
+        wait();
+    }
+
+    function wait() {
         tick();
+        fixture.detectChanges();
     }
 });

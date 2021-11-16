@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { first, tap } from 'rxjs';
+import { catchError, first, of, tap } from 'rxjs';
 import { RoutePaths } from '../../../../shared/constants/route-paths';
 import { IUser } from '../../../../shared/models/user';
 import { AuthService } from '../../auth.service';
@@ -13,8 +13,7 @@ import { getDefaultUserValues } from '../../../../shared/utilities/user-helpers'
   templateUrl: './register.component.html'
 })
 export class RegisterComponent {
-    formDataModel: IUser = getDefaultUserValues()
-    error = null;
+    formDataModel: IUser = getDefaultUserValues();
 
     constructor(private authService: AuthService, private router: Router, private storageService: LocalStorageService, private errorHandler: ErrorHandlerService) {}
 
@@ -25,17 +24,13 @@ export class RegisterComponent {
                 next: response => {
                     this.storageService.setItem(StorageKeys.User, response);
                     this.router.navigateByUrl(RoutePaths.Base);
-                },
-                error: error => {
-                    this.error = error;
-                    this.errorHandler.handleError(error);
                 }
+            }),
+            catchError(error => {
+                this.errorHandler.handleError(error);
+
+                return of(error);
             })
         ).subscribe();
-    }
-
-    getError(errors: any) {
-        console.log(errors);
-
     }
 }

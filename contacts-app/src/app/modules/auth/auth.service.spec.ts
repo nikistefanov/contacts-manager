@@ -1,32 +1,65 @@
-import { TestBed } from "@angular/core/testing";
-import { ACTIVE_USER_INFO, INACTIVE_USER_INFO } from "../../../test-helpers/mocks";
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from "@angular/common/http/testing";
+import { fakeAsync, TestBed } from "@angular/core/testing";
+import { ACTIVE_USER_INFO, INACTIVE_USER_INFO, LocalStorageServiceMock, USER } from "../../../test-helpers/mocks";
+import { LocalStorageService, StorageKeys } from "../../shared/services/local-storage/local-storage.service";
 import { AuthModule } from "./auth.module";
-import { AuthService } from "./auth.service";
+import { AuthService, AUTH_LOGIN, AUTH_REGISTER } from "./auth.service";
 
-describe("AuthService", () => {
+fdescribe("AuthService", () => {
     let authService: AuthService
+    let httpTestingController: HttpTestingController;
+    let storageService: LocalStorageServiceMock;
 
     beforeEach(() => {
+        storageService = new LocalStorageServiceMock();
+
         TestBed.configureTestingModule({
-            imports: [AuthModule]
+            imports: [AuthModule, HttpClientTestingModule],
+            providers: [
+                { provide: LocalStorageService, useValue: storageService }
+            ]
         });
         authService = TestBed.inject(AuthService);
+        httpTestingController = TestBed.inject(HttpTestingController);
+    });
+
+    afterEach(() => {
+        httpTestingController.verify();
     });
 
     it("should return that user is logged when active token", () => {
-        spyOn(authService, "getUserInfo").and.returnValue(ACTIVE_USER_INFO);
+        storageService.setItem(StorageKeys.User, ACTIVE_USER_INFO);
+
         expect(authService.isLogged).toBeTrue();
     });
 
     it("should return that user is expired when inactive token", () => {
-        spyOn(authService, "getUserInfo").and.returnValue(INACTIVE_USER_INFO);
+        storageService.setItem(StorageKeys.User, INACTIVE_USER_INFO);
 
         expect(authService.isLogged).toBeFalse();
     });
 
     it("should return false when no token found", () => {
-        spyOn(authService as any, "getUserInfo").and.returnValue(null);
-
         expect(authService.isLogged).toBeFalsy();
     });
+
+    it("should return correct user info when successfull login", fakeAsync(() => {
+        authService.login(USER).subscribe(data => {
+            expect(data).toBe(ACTIVE_USER_INFO);
+        });
+        const req: TestRequest = httpTestingController.expectOne(AUTH_LOGIN);
+        expect(req.request.method).toBe("POST");
+
+        req.flush(ACTIVE_USER_INFO);
+    }));
+
+    it("should clear storage data when logout", fakeAsync(() => {
+        storageService.setItem(StorageKeys.User, ACTIVE_USER_INFO);
+
+        expect(storageService.getItem(StorageKeys.User)).toBe(ACTIVE_USER_INFO);
+
+        authService.logout();
+
+        expect(storageService.getItem(StorageKeys.User)).not.toBeDefined();
+    }));
 });

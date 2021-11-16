@@ -6,8 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from "rxjs";
 import { API_BASE } from '../../shared/constants/api';
 
-const AUTH_LOGIN = `${API_BASE}/auth/local`;
-const AUTH_REGISTER = `${AUTH_LOGIN}/register`;
+export const AUTH_LOGIN = `${API_BASE}/auth/local`;
+export const AUTH_REGISTER = `${AUTH_LOGIN}/register`;
 
 @Injectable({
     providedIn: 'root'

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { first, tap } from 'rxjs';
+import { catchError, first, of, tap } from 'rxjs';
 import { RoutePaths } from '../../../../shared/constants/route-paths';
 import { IUser } from '../../../../shared/models/user';
 import { AuthService } from '../../auth.service';
@@ -24,10 +24,12 @@ export class LoginComponent {
                 next: response => {
                     this.storageService.setItem(StorageKeys.User, response);
                     this.router.navigateByUrl(RoutePaths.Contacts);
-                },
-                error: error => {
-                    this.errorHandler.handleError(error);
                 }
+            }),
+            catchError(error => {
+                this.errorHandler.handleError(error);
+
+                return of(error);
             })
         ).subscribe();
     }

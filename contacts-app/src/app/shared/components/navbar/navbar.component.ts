@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../modules/auth/auth.service';
-import {first, tap} from "rxjs";
-import {RoutePaths} from "../../constants/route-paths";
+import { first, tap } from "rxjs";
+import { RoutePaths } from "../../constants/route-paths";
 
 @Component({
     selector: 'app-navbar',

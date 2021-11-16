@@ -1,6 +1,4 @@
-import { Observable, of } from "rxjs";
-import { AuthService } from "../app/modules/auth/auth.service";
-import { IUserInfo } from "../app/shared/models/user"
+import { IUser, IUserInfo } from "../app/shared/models/user"
 
 // Active untile 2121
 export const ACTIVE_USER_INFO: IUserInfo = {
@@ -21,11 +19,12 @@ export const INACTIVE_USER_INFO: IUserInfo = {
     }
 }
 
-export class RouterMock {
-	navigate() {}
-
-    navigateByUrl(path: string) {}
-}
+export const USER: IUser = {
+    id: 1,
+    username: "joe",
+    email: "joe@doe.com",
+    password: "password"
+};
 
 export class LocalStorageServiceMock {
     private data: any = {};
@@ -37,28 +36,8 @@ export class LocalStorageServiceMock {
     getItem(key: string) {
         return this.data[key];
     }
-}
 
-export class AuthServiceMock {
-    private userInfo: IUserInfo;
-    private userLogged: boolean;
-    private userActive: boolean;
-
-    constructor(isLogged: boolean, isActiveUser: boolean) {
-        this.userActive = isActiveUser;
-        this.userInfo = isActiveUser ? ACTIVE_USER_INFO : INACTIVE_USER_INFO;
-        this.userLogged = isLogged;
-    }
-
-    get isLogged(): boolean {
-        return this.userLogged && this.userActive;
-    }
-
-    getUserInfo(): IUserInfo {
-        return this.userInfo;
-    }
-
-    login(): Observable<IUserInfo> {
-        return of(this.userInfo);
+    deleteItem(key: string) {
+        delete this.data[key];
     }
 }
