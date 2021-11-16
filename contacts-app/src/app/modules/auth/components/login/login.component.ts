@@ -5,8 +5,9 @@ import { RoutePaths } from '../../../../shared/constants/route-paths';
 import { IUser } from '../../../../shared/models/user';
 import { AuthService } from '../../auth.service';
 import { ErrorHandlerService } from '../../../../shared/services/error-handler/error-handler.service';
-import { LocalStorageService, StorageKeys } from '../../../../shared/services/local-storage/local-storage.service';
+import { StorageService } from '../../../../shared/services/storage/storage.service';
 import { getDefaultUserValues } from '../../../../shared/utilities/user-helpers';
+import { StorageKeys } from '../../../../shared/constants/storage';
 
 @Component({
     selector: 'app-login',
@@ -15,7 +16,7 @@ import { getDefaultUserValues } from '../../../../shared/utilities/user-helpers'
 export class LoginComponent {
     formDataModel: IUser = getDefaultUserValues();
 
-    constructor(private authService: AuthService, private storageService: LocalStorageService, private router: Router, private errorHandler: ErrorHandlerService) { }
+    constructor(private authService: AuthService, private storageService: StorageService, private router: Router, private errorHandler: ErrorHandlerService) { }
 
     login(user: IUser) {
         this.authService.login(user).pipe(

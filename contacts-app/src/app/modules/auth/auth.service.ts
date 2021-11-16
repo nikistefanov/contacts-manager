@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { IUser, IUserInfo } from '../../shared/models/user';
-import { LocalStorageService, StorageKeys } from '../../shared/services/local-storage/local-storage.service';
+import { StorageService } from '../../shared/services/storage/storage.service';
 import { convertUnixToDate, decodeToken } from '../../shared/utilities/token-helpers';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from "rxjs";
 import { API_BASE } from '../../shared/constants/api';
+import { StorageKeys } from '../../shared/constants/storage';
 
 export const AUTH_LOGIN = `${API_BASE}/auth/local`;
 export const AUTH_REGISTER = `${AUTH_LOGIN}/register`;
@@ -19,7 +20,7 @@ export class AuthService {
         return !!user && this.hasActiveToken(user.jwt);
     }
 
-    constructor(private storageService: LocalStorageService, private http: HttpClient) { }
+    constructor(private storageService: StorageService, private http: HttpClient) { }
 
     register(user: IUser): Observable<IUserInfo> {
         return this.http.post<IUserInfo>(AUTH_REGISTER, {

@@ -26,7 +26,7 @@ export const USER: IUser = {
     password: "password"
 };
 
-export class LocalStorageServiceMock {
+export class StorageServiceMock {
     private data: any = {};
 
     setItem(key: string, value: Object) {

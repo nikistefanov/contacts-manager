@@ -8,6 +8,7 @@ import { CheckPasswordDirective } from './directives/check-password.directive';
 import { LoaderComponent } from './components/loader/loader.component';
 import { ConfirmDeleteComponent } from './components/dialog/confirm-delete/confirm-delete.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { StorageService } from './services/storage/storage.service';
 
 const COMPONENTS = [
     CardComponent,
@@ -28,6 +29,7 @@ const DIRECTIVES = [
     RouterModule,
     MaterialModule
   ],
+  providers: [],
   exports: [...COMPONENTS, ...DIRECTIVES]
 })
 export class SharedModule { }

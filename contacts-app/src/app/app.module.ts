@@ -8,6 +8,7 @@ import { ContactsModule } from './modules/contacts/contacts.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './modules/material/material.module';
 import { SharedModule } from './shared/shared.module';
+import { StorageService } from './shared/services/storage/storage.service';
 
 @NgModule({
   declarations: [

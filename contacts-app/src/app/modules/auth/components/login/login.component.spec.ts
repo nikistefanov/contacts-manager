@@ -5,20 +5,21 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterTestingModule } from "@angular/router/testing";
 import { AuthModule } from "../../auth.module";
 import { LoginComponent } from "./login.component";
-import { ACTIVE_USER_INFO, LocalStorageServiceMock, USER } from "../../../../../test-helpers/mocks";
+import { ACTIVE_USER_INFO, StorageServiceMock, USER } from "../../../../../test-helpers/mocks";
 import { AuthService, AUTH_LOGIN } from "../../auth.service";
-import { LocalStorageService, StorageKeys } from "../../../../shared/services/local-storage/local-storage.service";
+import { StorageService } from "../../../../shared/services/storage/storage.service";
 import { Router } from "@angular/router";
 import { RoutePaths } from "../../../../shared/constants/route-paths";
 import { SpyLocation } from "@angular/common/testing";
 import { contactsRoutes } from "../../../contacts/contacts-routing.module";
 import { authRoutes } from "../../auth-routing.module";
 import { appRoutes } from "../../../../app-routing.module";
+import { StorageKeys } from "../../../../shared/constants/storage";
 
-fdescribe("LoginComponent", () => {
+describe("LoginComponent", () => {
     let component: LoginComponent;
     let fixture: ComponentFixture<LoginComponent>;
-    let storageService: LocalStorageServiceMock;
+    let storageService: StorageServiceMock;
     let router: Router;
     let httpTestingController: HttpTestingController;
     let authService: AuthService;
@@ -61,7 +62,7 @@ fdescribe("LoginComponent", () => {
     }));
 
     function setup() {
-        storageService = new LocalStorageServiceMock();
+        storageService = new StorageServiceMock();
 
         TestBed.configureTestingModule({
             declarations: [
@@ -74,7 +75,7 @@ fdescribe("LoginComponent", () => {
                 HttpClientTestingModule],
             providers: [
                 { provide: Location, useClass: SpyLocation },
-                { provide: LocalStorageService, useValue: storageService }
+                { provide: StorageService, useValue: storageService }
             ]
         });
 

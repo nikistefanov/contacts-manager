@@ -1,22 +1,22 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from "@angular/common/http/testing";
 import { fakeAsync, TestBed } from "@angular/core/testing";
-import { ACTIVE_USER_INFO, INACTIVE_USER_INFO, LocalStorageServiceMock, USER } from "../../../test-helpers/mocks";
-import { LocalStorageService, StorageKeys } from "../../shared/services/local-storage/local-storage.service";
-import { AuthModule } from "./auth.module";
-import { AuthService, AUTH_LOGIN, AUTH_REGISTER } from "./auth.service";
+import { ACTIVE_USER_INFO, INACTIVE_USER_INFO, StorageServiceMock, USER } from "../../../test-helpers/mocks";
+import { StorageKeys } from "../../shared/constants/storage";
+import { StorageService } from "../../shared/services/storage/storage.service";
+import { AuthService, AUTH_LOGIN } from "./auth.service";
 
-fdescribe("AuthService", () => {
+describe("AuthService", () => {
     let authService: AuthService
     let httpTestingController: HttpTestingController;
-    let storageService: LocalStorageServiceMock;
+    let storageService: StorageServiceMock;
 
     beforeEach(() => {
-        storageService = new LocalStorageServiceMock();
+        storageService = new StorageServiceMock();
 
         TestBed.configureTestingModule({
-            imports: [AuthModule, HttpClientTestingModule],
+            imports: [HttpClientTestingModule],
             providers: [
-                { provide: LocalStorageService, useValue: storageService }
+                { provide: StorageService, useValue: storageService }
             ]
         });
         authService = TestBed.inject(AuthService);

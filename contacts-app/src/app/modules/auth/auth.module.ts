@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../../shared/shared.module';
 import { AuthService } from './auth.service';
+import { StorageService } from '../../shared/services/storage/storage.service';
 
 const COMPONENTS = [
     RegisterComponent,

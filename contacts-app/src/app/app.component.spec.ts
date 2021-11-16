@@ -10,10 +10,12 @@ import { authRoutes } from './modules/auth/auth-routing.module';
 import { RoutePaths } from './shared/constants/route-paths';
 import { Router } from '@angular/router';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
+import { StorageService } from './shared/services/storage/storage.service';
+import { StorageServiceMock } from '../test-helpers/mocks';
 
 const NOT_FOUND_HEADING_SELECTOR = "h1";
 
-fdescribe('AppComponent', () => {
+describe('AppComponent', () => {
     let fixture: ComponentFixture<AppComponent>;
     let location: Location;
     let router: Router;
@@ -55,6 +57,7 @@ fdescribe('AppComponent', () => {
                 AppModule,
                 RouterTestingModule.withRoutes([...appRoutes, ...authRoutes])],
             providers: [
+                { provide: StorageService, useClass: StorageServiceMock },
                 { provide: Location, useClass: SpyLocation }
             ]
         });
