@@ -3,7 +3,7 @@ import { IContact } from '../../../shared/models/contact';
 import { Observable } from "rxjs";
 import { ApiService } from '../api.service';
 
-const CONTACTS_API =  "/contacts";
+export const CONTACTS_API =  "/contacts";
 
 
 @Injectable({

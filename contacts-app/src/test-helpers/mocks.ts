@@ -1,3 +1,4 @@
+import { IStorage } from "../app/shared/models/storage";
 import { IUser, IUserInfo } from "../app/shared/models/user"
 
 // Active untile 2121
@@ -26,7 +27,7 @@ export const USER: IUser = {
     password: "password"
 };
 
-export class StorageServiceMock {
+export class StorageServiceMock implements IStorage {
     private data: any = {};
 
     setItem(key: string, value: Object) {

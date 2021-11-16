@@ -1,6 +1,6 @@
 <div class="mb-7 mt-7" mat-dialog-content [innerHtml]="dialogData.message">
 </div>
 <div mat-dialog-actions>
-    <button mat-raised-button color="warn" (click)="onConfirm()">Confirm</button>
+    <button mat-raised-button [color]="dialogData.buttonColor" (click)="onConfirm()">Confirm</button>
     <button class="ml-5" mat-raised-button (click)="onCancel()">Cancel</button>
 </div>

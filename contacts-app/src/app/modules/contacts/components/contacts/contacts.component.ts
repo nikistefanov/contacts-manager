@@ -5,9 +5,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ContactCreateComponent } from '../contact-create/contact-create.component';
 import { AuthService } from '../../../auth/auth.service';
 import { catchError, delay, first, of, tap } from "rxjs";
-import { IContactCreateDialogData, IDeleteConfirmation } from '../../../../shared/models/dialog';
+import { IContactCreateDialogData, IConfirmationDialogData } from '../../../../shared/models/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
-import { ConfirmDeleteComponent } from '../../../../shared/components/dialog/confirm-delete/confirm-delete.component';
+import { ConfirmComponent } from '../../../../shared/components/dialog/confirm/confirm.component';
 import { ErrorHandlerService } from '../../../../shared/services/error-handler/error-handler.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -45,7 +45,6 @@ export class ContactsComponent implements OnInit {
         this.userInfo = this.authService.getUserInfo();
         this.rootService.contacts.getAllByUser(this.userInfo.user.id).pipe(
             first(),
-            delay(1000),
             tap({
                 next: contacts => {
                     this.setupTable(contacts);
@@ -62,10 +61,11 @@ export class ContactsComponent implements OnInit {
     }
 
     onDelete(contact: IContact) {
-        const data: IDeleteConfirmation = {
-            message: `Are you sure want to delete <b class="whitespace-nowrap">${contact.firstName} ${contact.surname}</b> from your contact list`
+        const data: IConfirmationDialogData = {
+            message: `Are you sure want to delete <b class="whitespace-nowrap">${contact.firstName} ${contact.surname}</b> from your contact list`,
+            buttonColor: "warn"
         }
-        this.openDialog(data, ConfirmDeleteComponent, this.deleteContact.bind(this, contact));
+        this.openDialog(data, ConfirmComponent, this.deleteContact.bind(this, contact));
     }
 
     onUpdateContact(contact: IContact) {
@@ -86,7 +86,7 @@ export class ContactsComponent implements OnInit {
         });
     }
 
-    private openDialog(dialogData: IContactCreateDialogData | IDeleteConfirmation, component: ComponentType<ContactCreateComponent | ConfirmDeleteComponent>, cb: Function, updateContactId?: number) {
+    private openDialog(dialogData: IContactCreateDialogData | IConfirmationDialogData, component: ComponentType<ContactCreateComponent | ConfirmComponent>, cb: Function, updateContactId?: number) {
         const dialogRef = this.dialog.open(component, {
             data: dialogData,
             panelClass: ["w-full", "md-lg:w-7/12"]

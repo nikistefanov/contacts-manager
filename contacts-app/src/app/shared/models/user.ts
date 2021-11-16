@@ -9,10 +9,3 @@ export interface IUserInfo {
     jwt: string;
     user: IUser;
 }
-
-export interface IUserRegistration extends IUser {
-    passwords: {
-        password: string;
-        confirmPassowrd: string;
-    }
-}

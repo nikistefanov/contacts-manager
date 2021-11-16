@@ -29,13 +29,11 @@ describe("AuthService", () => {
 
     it("should return that user is logged when active token", () => {
         storageService.setItem(StorageKeys.User, ACTIVE_USER_INFO);
-
         expect(authService.isLogged).toBeTrue();
     });
 
     it("should return that user is expired when inactive token", () => {
         storageService.setItem(StorageKeys.User, INACTIVE_USER_INFO);
-
         expect(authService.isLogged).toBeFalse();
     });
 
@@ -55,11 +53,9 @@ describe("AuthService", () => {
 
     it("should clear storage data when logout", fakeAsync(() => {
         storageService.setItem(StorageKeys.User, ACTIVE_USER_INFO);
-
         expect(storageService.getItem(StorageKeys.User)).toBe(ACTIVE_USER_INFO);
 
         authService.logout();
-
         expect(storageService.getItem(StorageKeys.User)).not.toBeDefined();
     }));
 });

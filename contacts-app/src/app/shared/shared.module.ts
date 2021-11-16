@@ -4,9 +4,8 @@ import { CardComponent } from './components/card/card.component';
 import { MaterialModule } from '../modules/material/material.module';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
-import { CheckPasswordDirective } from './directives/check-password.directive';
 import { LoaderComponent } from './components/loader/loader.component';
-import { ConfirmDeleteComponent } from './components/dialog/confirm-delete/confirm-delete.component';
+import { ConfirmComponent } from './components/dialog/confirm/confirm.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { StorageService } from './services/storage/storage.service';
 
@@ -14,22 +13,18 @@ const COMPONENTS = [
     CardComponent,
     NavbarComponent,
     LoaderComponent,
-    ConfirmDeleteComponent,
+    ConfirmComponent,
     NotFoundComponent
 ]
 
-const DIRECTIVES = [
-    CheckPasswordDirective
-]
-
 @NgModule({
-  declarations: [...COMPONENTS, ...DIRECTIVES],
+  declarations: [...COMPONENTS],
   imports: [
     CommonModule,
     RouterModule,
     MaterialModule
   ],
   providers: [],
-  exports: [...COMPONENTS, ...DIRECTIVES]
+  exports: [...COMPONENTS]
 })
 export class SharedModule { }

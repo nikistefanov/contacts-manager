@@ -1,3 +1,4 @@
+import { ThemePalette } from "@angular/material/core";
 import { IContact } from "./contact";
 
 export interface IContactCreateDialogData {
@@ -5,6 +6,7 @@ export interface IContactCreateDialogData {
     contact?: IContact;
 }
 
-export interface IDeleteConfirmation {
+export interface IConfirmationDialogData {
     message: string;
+    buttonColor: ThemePalette;
 }
