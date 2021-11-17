@@ -20,6 +20,7 @@ import { ContactsModule } from './modules/contacts/contacts.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const NOT_FOUND_HEADING_SELECTOR = "h1";
+const CARD_HEADING_SELECTOR = ".app-card__header";
 
 describe('AppComponent', () => {
     let fixture: ComponentFixture<AppComponent>;
@@ -35,7 +36,7 @@ describe('AppComponent', () => {
         wait();
 
         expect(location.path()).toBe(RoutePaths.Login);
-        const cardHeader = fixture.debugElement.query(By.css(".app-card__header"));
+        const cardHeader = fixture.debugElement.query(By.css(CARD_HEADING_SELECTOR));
 
         expect(cardHeader).toBeDefined();
         expect(cardHeader.nativeElement.innerText).toBe("Login");
@@ -76,7 +77,7 @@ describe('AppComponent', () => {
         setup();
         expect(location.path()).toBe(RoutePaths.Base);
 
-        router.navigateByUrl("no-result");
+        router.navigateByUrl("somewhere");
         wait();
 
         const notFoundComponent = fixture.debugElement.query(By.directive(NotFoundComponent));
