@@ -18,23 +18,20 @@ export class ErrorHandlerService {
     }
 
     private getErrormessage(errorData: any) {
-        const fieldErrors = errorData?.error?.data?.errors;
-        const serverError = errorData?.error?.data[0]?.messages[0].message;
-
-        if (fieldErrors) {
-            let message = "";
-            Object.keys(fieldErrors).forEach(x => {
-                message += `${fieldErrors[x]}. `;
-            });
-
-            return message;
+        let errorMessage = DEFAULT_ERROR_MESSAGE;
+        if (!errorData || !errorData.error || !errorData.error.message) {
+            return errorMessage;
         }
 
-        if (serverError) {
-            return serverError;
+        if (!Array.isArray(errorData.error.message)) {
+            errorMessage = errorData.error.message;
+        } else if (errorData?.error?.data?.errors) {
+            errorMessage = errorData?.error?.data?.errors;
+        } else if (errorData?.error?.data[0]?.messages[0].message) {
+            errorMessage = errorData?.error?.data[0]?.messages[0].message;
         }
 
-        return DEFAULT_ERROR_MESSAGE;
+        return errorMessage;
     }
 
     private openSnackBar(message: string) {

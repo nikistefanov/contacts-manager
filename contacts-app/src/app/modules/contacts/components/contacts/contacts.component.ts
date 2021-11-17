@@ -14,6 +14,8 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { CONTACTS_COLUMNS_MAP, CONTACTS_HEADERS_MAP } from '../../../../shared/utilities/contact-helpers';
 import { RootService } from '../../../http/root.service';
 import { LOADING_TIME } from '../../../../shared/constants/contacts';
+import { Router } from '@angular/router';
+import { RoutePaths } from '../../../../shared/constants/route-paths';
 
 @Component({
     selector: 'app-contacts',
@@ -37,7 +39,8 @@ export class ContactsComponent implements OnInit {
     constructor(private authService: AuthService,
                 private rootService: RootService,
                 private dialog: MatDialog,
-                private errorHandler: ErrorHandlerService) {
+                private errorHandler: ErrorHandlerService,
+                private router: Router) {
         this.contactHeaders = CONTACTS_HEADERS_MAP;
         this.contactColumns = CONTACTS_COLUMNS_MAP;
     }
@@ -53,7 +56,12 @@ export class ContactsComponent implements OnInit {
 
                 this.isLoading = false;
             },
-            error: error => this.errorHandler.handleError(error)
+            error: error => {
+                this.errorHandler.handleError(error);
+                this.authService.logout().pipe(
+                    first()
+                ).subscribe(() => this.router.navigateByUrl(RoutePaths.Login));
+            }
         });
     }
 
