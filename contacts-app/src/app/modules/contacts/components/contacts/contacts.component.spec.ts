@@ -73,7 +73,7 @@ describe("ContactsComponent", () => {
         mockContacts([contact]);
         verifyResultsScreen([contact]);
 
-        component.onUpdateContact(contact);
+        component.onUpdateContact(new Event("click"), contact);
         const req: TestRequest = httpTestingController.expectOne(`${API_BASE}${CONTACTS_API}/${contact.id}`);
         expect(req.request.method).toBe("PUT");
         req.flush(modifiedContact);
@@ -90,7 +90,7 @@ describe("ContactsComponent", () => {
         mockContacts([contact]);
         verifyResultsScreen([contact]);
 
-        component.onDelete(contact);
+        component.onDelete(new Event("click"), contact);
         const req: TestRequest = httpTestingController.expectOne(`${API_BASE}${CONTACTS_API}/${contact.id}`);
         expect(req.request.method).toBe("DELETE");
         req.flush(contact);
