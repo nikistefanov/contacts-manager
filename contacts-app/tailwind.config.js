@@ -1,6 +1,8 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
     purge: [],
-    darkMode: false, // or 'media' or 'class'
+    darkMode: false,
     important: true,
     theme: {
         extend: {
@@ -9,6 +11,8 @@ module.exports = {
             },
         },
     },
-    variants: {},
+    variants: {
+        extend: {},
+    },
     plugins: [],
 }

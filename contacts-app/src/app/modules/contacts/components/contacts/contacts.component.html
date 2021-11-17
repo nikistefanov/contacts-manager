@@ -75,11 +75,11 @@
         <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu" xPosition="before">
-        <button (click)="onUpdateContact(contact)" mat-menu-item>
+        <button (click)="onUpdateContact($event, contact)" mat-menu-item>
             <mat-icon>edit</mat-icon>
             <span>Edit</span>
         </button>
-        <button (click)="onDelete(contact)" mat-menu-item>
+        <button (click)="onDelete($event, contact)" mat-menu-item>
             <mat-icon>delete</mat-icon>
             <span>Delete</span>
         </button>
@@ -87,11 +87,11 @@
 </ng-template>
 
 <ng-template #actionsMobile let-contact="contact">
-    <button class="text-center" (click)="onUpdateContact(contact)" mat-raised-button>
+    <button class="text-center" (click)="onUpdateContact($event, contact)" mat-raised-button>
         <mat-icon>edit</mat-icon>
         <span>Edit</span>
     </button>
-    <button class="text-center ml-4" (click)="onDelete(contact)" mat-raised-button>
+    <button class="text-center ml-4" (click)="onDelete($event, contact)" mat-raised-button>
         <mat-icon>delete</mat-icon>
         <span>Delete</span>
     </button>

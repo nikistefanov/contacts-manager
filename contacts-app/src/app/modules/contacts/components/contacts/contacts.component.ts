@@ -57,7 +57,8 @@ export class ContactsComponent implements OnInit {
         });
     }
 
-    onDelete(contact: IContact) {
+    onDelete(event: Event, contact: IContact) {
+        event.stopImmediatePropagation();
         const data: IConfirmationDialogData = {
             message: `Are you sure want to delete <b class="whitespace-nowrap">${contact.firstName} ${contact.surname}</b> from your contact list`,
             buttonColor: "warn"
@@ -65,7 +66,8 @@ export class ContactsComponent implements OnInit {
         this.openDialog(data, ConfirmComponent, this.deleteContact.bind(this, contact));
     }
 
-    onUpdateContact(contact: IContact) {
+    onUpdateContact(event: Event, contact: IContact) {
+        event.stopImmediatePropagation();
         const contactData = Object.assign({}, contact);
         this.openDialog({ label: "Update", contact: contactData }, ContactCreateComponent, this.updateContact.bind(this), contactData.id);
     }
