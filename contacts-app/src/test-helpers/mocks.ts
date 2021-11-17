@@ -29,6 +29,20 @@ export const USER_MOCK: IUser = {
     password: "password"
 };
 
+export const MOCKED_ERROR = {
+    error: {
+        message: [
+            {
+                messages: [
+                    {
+                        message: "Identifier or password invalid."
+                    }
+                ]
+            }
+        ]
+    }
+};
+
 export class StorageServiceMock implements IStorage {
     private data: any = {};
 

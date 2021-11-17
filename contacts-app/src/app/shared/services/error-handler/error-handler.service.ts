@@ -25,10 +25,8 @@ export class ErrorHandlerService {
 
         if (!Array.isArray(errorData.error.message)) {
             errorMessage = errorData.error.message;
-        } else if (errorData?.error?.data?.errors) {
-            errorMessage = errorData?.error?.data?.errors;
-        } else if (errorData?.error?.data[0]?.messages[0].message) {
-            errorMessage = errorData?.error?.data[0]?.messages[0].message;
+        } else if (errorData.error.message[0]?.messages[0]?.message) {
+            errorMessage = errorData.error.message[0].messages[0].message;
         }
 
         return errorMessage;

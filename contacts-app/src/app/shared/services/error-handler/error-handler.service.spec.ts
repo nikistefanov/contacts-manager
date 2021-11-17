@@ -1,4 +1,5 @@
 import { TestBed } from "@angular/core/testing";
+import { MOCKED_ERROR } from "../../../../test-helpers/mocks";
 import { MaterialModule } from "../../../modules/material/material.module";
 
 import { DEFAULT_ERROR_MESSAGE, ErrorHandlerService } from "./error-handler.service";
@@ -25,12 +26,11 @@ describe("ErrorHandlerService", () => {
 
     it("should show corrent message when server error match is found", () => {
         const expectedMessage = "Identifier or password invalid.";
-        const mockedError = { error: { data: [{ messages: [{ message: expectedMessage }] }]}};
 
         const serviceAsAny = service as any;
 
         const messageSpy = spyOn(serviceAsAny, "openSnackBar");
-        serviceAsAny.handleError(mockedError);
+        serviceAsAny.handleError(MOCKED_ERROR);
 
         expect(messageSpy).toHaveBeenCalledWith(expectedMessage);
     });
