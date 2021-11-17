@@ -1,3 +1,7 @@
 # Strapi application
 
-A quick description of your strapi application
+Server based on Strapi [Strapi.io](https://strapi.io/)
+
+## Development
+
+Run `npm start` this will run server at `http://localhost:1337`
