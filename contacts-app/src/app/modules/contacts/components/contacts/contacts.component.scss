@@ -24,7 +24,7 @@
                 max-height: 500px;
 
                 .mat-cell:first-of-type::before {
-                    content: "\f077";
+                    content: "\e5ce";
                 }
             }
 
@@ -39,8 +39,8 @@
             &:first-of-type::before {
                 @apply absolute left-2 border-0 font-bold;
 
-                font-family: "FontAwesome";
-                content: "\f078";
+                font-family: "Material Icons";
+                content: "\e5cf";
             }
         }
     }
