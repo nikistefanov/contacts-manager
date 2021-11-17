@@ -37,7 +37,7 @@
             <mat-form-field class="w-full" appearance="fill">
                 <mat-label>Address</mat-label>
                 <input #address="ngModel" [(ngModel)]="formDataModel.address" type="text" name="address" matInput
-                    placeholder="address" required>
+                    placeholder="Address" required>
                 <mat-error *ngIf="address?.errors">
                     <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>
                 </mat-error>
@@ -46,8 +46,8 @@
         <div class="mb-5">
             <mat-form-field class="w-full" appearance="fill">
                 <mat-label>Phone number</mat-label>
-                <input #phoneNumber="ngModel" [(ngModel)]="formDataModel.phoneNumber" type="tel" name="phoneNumber"
-                    matInput placeholder="phoneNumber" required>
+                <input #phoneNumber="ngModel" [(ngModel)]="formDataModel.phoneNumber" type="number" name="phoneNumber"
+                    matInput placeholder="Phone number" required>
                 <mat-error *ngIf="phoneNumber?.errors">
                     <ng-template [ngTemplateOutlet]="requiredMessage"></ng-template>
                 </mat-error>
