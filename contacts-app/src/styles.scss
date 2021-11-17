@@ -1,7 +1,5 @@
 @use "sass:meta";
 
-@include meta.load-css("styles/fonts");
-
 // Vendors
 @include meta.load-css("styles/vendors/tailwind");
 @include meta.load-css("styles/vendors/material-overrides");

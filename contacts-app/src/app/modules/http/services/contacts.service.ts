@@ -5,7 +5,6 @@ import { ApiService } from '../api.service';
 
 export const CONTACTS_API =  "/contacts";
 
-
 @Injectable({
     providedIn: 'root'
 })

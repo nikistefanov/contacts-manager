@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
 import { LoaderComponent } from './components/loader/loader.component';
 import { ConfirmComponent } from './components/dialog/confirm/confirm.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { StorageService } from './services/storage/storage.service';
 
 const COMPONENTS = [
     CardComponent,
