@@ -48,11 +48,7 @@
 
 .app-paginator {
     .mat-paginator-container {
-        @apply justify-start;
-    }
-
-    .mat-paginator-range-label {
-        @apply mx-1;
+        @apply flex-wrap;
     }
 }
 
@@ -76,12 +72,6 @@
                     @apply hidden;
                 }
             }
-        }
-    }
-
-    .app-paginator {
-        .mat-paginator-container {
-            @apply justify-end;
         }
     }
 }
