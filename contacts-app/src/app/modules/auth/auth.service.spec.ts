@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from "@angular/common/http/testing";
 import { fakeAsync, TestBed } from "@angular/core/testing";
-import { ACTIVE_USER_INFO, INACTIVE_USER_INFO, StorageServiceMock, USER } from "../../../test-helpers/mocks";
+import { ACTIVE_USER_INFO, INACTIVE_USER_INFO, StorageServiceMock, USER_MOCK } from "../../../test-helpers/mocks";
 import { StorageKeys } from "../../shared/constants/storage";
 import { StorageService } from "../../shared/services/storage/storage.service";
 import { AuthService, AUTH_LOGIN } from "./auth.service";
@@ -42,7 +42,7 @@ describe("AuthService", () => {
     });
 
     it("should return correct user info when successfull login", fakeAsync(() => {
-        authService.login(USER).subscribe(data => {
+        authService.login(USER_MOCK).subscribe(data => {
             expect(data).toBe(ACTIVE_USER_INFO);
         });
         const req: TestRequest = httpTestingController.expectOne(AUTH_LOGIN);

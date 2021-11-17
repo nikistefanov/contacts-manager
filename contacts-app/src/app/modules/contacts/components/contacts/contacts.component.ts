@@ -4,7 +4,7 @@ import { IUserInfo } from '../../../../shared/models/user';
 import { MatDialog } from '@angular/material/dialog';
 import { ContactCreateComponent } from '../contact-create/contact-create.component';
 import { AuthService } from '../../../auth/auth.service';
-import { catchError, delay, first, of, tap } from "rxjs";
+import { delay, first } from "rxjs";
 import { IContactCreateDialogData, IConfirmationDialogData } from '../../../../shared/models/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
 import { ConfirmComponent } from '../../../../shared/components/dialog/confirm/confirm.component';
@@ -13,6 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { CONTACTS_COLUMNS_MAP, CONTACTS_HEADERS_MAP } from '../../../../shared/utilities/contact-helpers';
 import { RootService } from '../../../http/root.service';
+import { LOADING_TIME } from '../../../../shared/constants/contacts';
 
 @Component({
     selector: 'app-contacts',
@@ -45,19 +46,15 @@ export class ContactsComponent implements OnInit {
         this.userInfo = this.authService.getUserInfo();
         this.rootService.contacts.getAllByUser(this.userInfo.user.id).pipe(
             first(),
-            tap({
-                next: contacts => {
-                    this.setupTable(contacts);
+            delay(LOADING_TIME)
+        ).subscribe({
+            next: (contacts: IContact[]) => {
+                this.setupTable(contacts);
 
-                    this.isLoading = false;
-                }
-            }),
-            catchError(error => {
-                this.errorHandler.handleError(error);
-
-                return of(error);
-            })
-        ).subscribe();
+                this.isLoading = false;
+            },
+            error: error => this.errorHandler.handleError(error)
+        });
     }
 
     onDelete(contact: IContact) {
@@ -80,8 +77,8 @@ export class ContactsComponent implements OnInit {
     private deleteContact(contact: IContact) {
         this.rootService.contacts.delete(contact.id).pipe(
             first()
-        ).subscribe(() => {
-            this.contacts.splice(this.contacts.findIndex(i => i.id === contact.id), 1);
+        ).subscribe((resp: IContact) => {
+            this.contacts.splice(this.contacts.findIndex(i => i.id === resp.id), 1);
             this.dataSource.data = this.contacts;
         });
     }
@@ -101,38 +98,28 @@ export class ContactsComponent implements OnInit {
 
     private updateContact(contact: IContact, updateContactId: number) {
         this.rootService.contacts.update(contact, updateContactId, this.userInfo.user.id).pipe(
-            first(),
-            tap({
-                next: contact => {
-                    const index = this.contacts.findIndex(c => c.id === contact.id);
-                    this.contacts[index] = contact;
-                    this.dataSource.data = this.contacts;
-                }
-            }),
-            catchError(error => {
-                this.errorHandler.handleError(error);
-
-                return of(error);
-            })
-        ).subscribe();
+            first()
+        ).subscribe({
+            next: (resp: IContact) => {
+                const index = this.contacts.findIndex(c => c.id === resp.id);
+                this.contacts[index] = resp;
+                this.dataSource.data = this.contacts;
+            },
+            error: error => this.errorHandler.handleError(error)
+        });
     }
 
     private createContact(contact: IContact) {
         this.rootService.contacts.create(contact, this.userInfo.user.id).pipe(
-            first(),
-            tap({
-                next: response => {
-                    this.contacts.push(response);
-                    this.dataSource.data = this.contacts;
-                    this.paginator.lastPage();
-                }
-            }),
-            catchError(error => {
-                this.errorHandler.handleError(error);
-
-                return of(error);
-            })
-        ).subscribe();
+            first()
+        ).subscribe({
+            next: (resp: IContact) => {
+                this.contacts.push(resp);
+                this.dataSource.data = this.contacts;
+                this.paginator.lastPage();
+            },
+            error: error => this.errorHandler.handleError(error)
+        });
     }
 
     private setupTable(contacts: IContact[]) {

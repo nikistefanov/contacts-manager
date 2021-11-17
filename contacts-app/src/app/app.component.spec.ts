@@ -5,7 +5,6 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { appRoutes } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AppModule } from './app.module';
 import { authRoutes } from './modules/auth/auth-routing.module';
 import { RoutePaths } from './shared/constants/route-paths';
 import { Router } from '@angular/router';
@@ -14,6 +13,11 @@ import { StorageService } from './shared/services/storage/storage.service';
 import { ACTIVE_USER_INFO, StorageServiceMock } from '../test-helpers/mocks';
 import { StorageKeys } from './shared/constants/storage';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MaterialModule } from './modules/material/material.module';
+import { SharedModule } from './shared/shared.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { ContactsModule } from './modules/contacts/contacts.module';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const NOT_FOUND_HEADING_SELECTOR = "h1";
 
@@ -90,9 +94,13 @@ describe('AppComponent', () => {
                 AppComponent
             ],
             imports: [
-                AppModule,
+                SharedModule,
+                AuthModule,
+                ContactsModule,
+                MaterialModule,
                 RouterTestingModule.withRoutes([...appRoutes, ...authRoutes]),
-                HttpClientTestingModule
+                HttpClientTestingModule,
+                NoopAnimationsModule
             ],
             providers: [
                 { provide: StorageService, useValue: storageService },

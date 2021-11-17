@@ -58,7 +58,7 @@
 </ng-template>
 
 <ng-template #noResults>
-    <div class="md-lg:w-7/12 mx-auto flex flex-col items-center">
+    <div class="md-lg:w-7/12 mx-auto flex flex-col items-center" data-apptest="noResults">
         <h2>No contacts added yet.</h2>
         <ng-container *ngTemplateOutlet="createButton; context: { label: 'Add your first contact' }"></ng-container>
     </div>

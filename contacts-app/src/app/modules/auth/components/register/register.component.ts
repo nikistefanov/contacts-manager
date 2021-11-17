@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, first, of, tap } from 'rxjs';
+import { first } from 'rxjs';
 import { RoutePaths } from '../../../../shared/constants/route-paths';
-import { IUser } from '../../../../shared/models/user';
+import { IUser, IUserInfo } from '../../../../shared/models/user';
 import { AuthService } from '../../auth.service';
 import { ErrorHandlerService } from '../../../../shared/services/error-handler/error-handler.service';
 import { StorageService } from '../../../../shared/services/storage/storage.service';
@@ -20,18 +20,13 @@ export class RegisterComponent {
 
     register(user: IUser) {
         this.authService.register(user).pipe(
-            first(),
-            tap({
-                next: response => {
-                    this.storageService.setItem(StorageKeys.User, response);
-                    this.router.navigateByUrl(RoutePaths.Base);
-                }
-            }),
-            catchError(error => {
-                this.errorHandler.handleError(error);
-
-                return of(error);
-            })
-        ).subscribe();
+            first()
+        ).subscribe({
+            next: (resp: IUserInfo) => {
+                this.storageService.setItem(StorageKeys.User, resp);
+                this.router.navigateByUrl(RoutePaths.Base);
+            },
+            error: error => this.errorHandler.handleError(error)
+        });
     }
 }

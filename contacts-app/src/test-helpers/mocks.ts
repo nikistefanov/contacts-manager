@@ -1,3 +1,5 @@
+import { of } from "rxjs";
+import { IContact } from "../app/shared/models/contact";
 import { IStorage } from "../app/shared/models/storage";
 import { IUser, IUserInfo } from "../app/shared/models/user"
 
@@ -20,7 +22,7 @@ export const INACTIVE_USER_INFO: IUserInfo = {
     }
 }
 
-export const USER: IUser = {
+export const USER_MOCK: IUser = {
     id: 1,
     username: "joe",
     email: "joe@doe.com",
@@ -42,3 +44,32 @@ export class StorageServiceMock implements IStorage {
         delete this.data[key];
     }
 }
+
+export function getContactsMock(count: number = 1): IContact[] {
+    const contacts: IContact[] = [];
+
+    for (let i = 1; i <= count; i++) {
+        const contact: IContact = {
+            id: i,
+            firstName: `First${i}`,
+            surname: `Last${i}`,
+            DOB: new Date(),
+            IBAN: i * 1000,
+            phoneNumber: i * 1000,
+            userId: i
+        }
+
+        contacts.push(contact);
+    }
+
+    return contacts;
+}
+
+export class ContactCreateDialogMock {
+
+    open() {
+      return {
+        afterClosed: () => of(getContactsMock(1))
+      };
+    }
+  };

@@ -3,18 +3,20 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from "@an
 import { Location } from "@angular/common";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterTestingModule } from "@angular/router/testing";
-import { AuthModule } from "../../auth.module";
 import { RegisterComponent } from "./register.component";
-import { ACTIVE_USER_INFO, StorageServiceMock, USER } from "../../../../../test-helpers/mocks";
-import { AuthService, AUTH_REGISTER } from "../../auth.service";
+import { ACTIVE_USER_INFO, StorageServiceMock, USER_MOCK } from "../../../../../test-helpers/mocks";
+import { AUTH_REGISTER } from "../../auth.service";
 import { StorageService } from "../../../../shared/services/storage/storage.service";
 import { Router } from "@angular/router";
 import { RoutePaths } from "../../../../shared/constants/route-paths";
 import { SpyLocation } from "@angular/common/testing";
 import { contactsRoutes } from "../../../contacts/contacts-routing.module";
-import { authRoutes } from "../../auth-routing.module";
+import { authRoutes, AuthRoutingModule } from "../../auth-routing.module";
 import { appRoutes } from "../../../../app-routing.module";
 import { StorageKeys } from "../../../../shared/constants/storage";
+import { MaterialModule } from "../../../material/material.module";
+import { FormsModule } from "@angular/forms";
+import { SharedModule } from "../../../../shared/shared.module";
 
 describe("RegisterComponent", () => {
     let component: RegisterComponent;
@@ -22,7 +24,6 @@ describe("RegisterComponent", () => {
     let storageService: StorageServiceMock;
     let router: Router;
     let httpTestingController: HttpTestingController;
-    let authService: AuthService;
     let location: Location;
 
     beforeEach(fakeAsync(() => {
@@ -34,7 +35,7 @@ describe("RegisterComponent", () => {
     }));
 
     it("should update user storage info and navigate the user to contacts when successful register", fakeAsync(() => {
-        component.register(USER);
+        component.register(USER_MOCK);
         const req: TestRequest = httpTestingController.expectOne(AUTH_REGISTER);
         expect(req.request.method).toBe("POST");
 
@@ -48,13 +49,14 @@ describe("RegisterComponent", () => {
     it("should throw an error when wrong credentials are passed", fakeAsync(() => {
         const errorSpy = spyOn((component as any).errorHandler, "handleError");
 
-        component.register(USER);
+        component.register(USER_MOCK);
         const req: TestRequest = httpTestingController.expectOne(AUTH_REGISTER);
         req.flush("error", {
             status: 400,
             statusText: "Bad request"
         });
         tick();
+        fixture.detectChanges();
 
         expect(storageService.getItem(StorageKeys.User)).not.toBeDefined();
         expect(location.path()).toBe(RoutePaths.Register);
@@ -69,7 +71,10 @@ describe("RegisterComponent", () => {
                 RegisterComponent
             ],
             imports: [
-                AuthModule,
+                AuthRoutingModule,
+                FormsModule,
+                MaterialModule,
+                SharedModule,
                 RouterTestingModule.withRoutes([...appRoutes, ...contactsRoutes, ...authRoutes]),
                 NoopAnimationsModule,
                 HttpClientTestingModule],
@@ -82,12 +87,11 @@ describe("RegisterComponent", () => {
         router = TestBed.inject(Router);
         location = TestBed.inject(Location);
         httpTestingController = TestBed.inject(HttpTestingController);
-        authService = TestBed.inject(AuthService);
         fixture = TestBed.createComponent(RegisterComponent);
         component = fixture.componentInstance;
 
-        fixture.detectChanges();
         router.navigateByUrl(RoutePaths.Register);
         tick();
+        fixture.detectChanges();
     }
 });
